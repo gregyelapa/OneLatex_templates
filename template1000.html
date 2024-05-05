@@ -8,26 +8,11 @@
         <title>OneLatex template</title>
         <script>
                 async function copyToClipboard() {
-
                         const CBstring = document.getElementById('CBstring').innerHTML;
                         console.log(CBstring);
-                        copyHtmlToClipboard(CBstring);
-                        // await navigator.clipboard.write([new ClipboardItem({
-                        //        'text/html': new Blob([CBstring], { type: 'text/html' })
-                        // })]);
-                }
-
-                async function copyHtmlToClipboard(html) {
-                        // Copy HTML content as plain text
-                        await navigator.clipboard.writeText(html);
-
-                        // Remove the internet address from the HTML content
-                        const modifiedHtml = html.replace(/<a[^>]+>[^<]*<\/a>/g, ''); // Remove <a> tags and their content
-
-                        // Copy the modified HTML content to clipboard with custom format
-                        const blob = new Blob([modifiedHtml], { type: 'text/html' });
-                        const clipboardItem = new ClipboardItem({ 'text/html': blob });
-                        await navigator.clipboard.write([clipboardItem]);
+                        await navigator.clipboard.write([new ClipboardItem({
+                                'text/html': new Blob([CBstring], { type: 'text/html' })
+                        })]);
                 }
         </script>
 </head>
