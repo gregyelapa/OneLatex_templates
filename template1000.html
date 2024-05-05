@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="stylesheet" href="styles.css">
+        <title>OneLatex template</title>
+        <script>
+                async function copyToClipboard() {
+                        const CBstring = document.getElementById('CBstring').innerHTML;
+                        console.log(CBstring);
+                        await navigator.clipboard.write([new ClipboardItem({
+                                'text/html': new Blob([CBstring], { type: 'text/html' })
+                        })]);
+                }
+        </script>
+</head>
+
+<body>
+        <!-- This is an template for OneLatex that can be copied into the clipboard and pasted in OneNote -->
+        <button><a href="index.html">Zurück zur Startseite</a></button>
+        <div>
+                <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+        <div id="CBstring">
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}</span>
+                </p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[utf8]{inputenc}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[T1]{fontenc}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[english]{babel}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[english]{varioref}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[noabbrev,english]{cleveref}</span></p>
+        </div>
+
+</body>
+
+</html>
