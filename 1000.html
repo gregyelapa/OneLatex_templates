@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Text</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            // Define the LaTeX/HTML template text
+            const CBstring = `<div id="CBstring">
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}</span>
+                </p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[utf8]{inputenc}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[T1]{fontenc}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[english]{babel}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[english]{varioref}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[noabbrev,english]{cleveref}</span></p>
+        </div>`;
+            
+            try {
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': new Blob([CBstring], { type: 'text/html' })
+                    })
+                ]);
+                alert("Text has been copied!");
+                window.close(); // Optional: Close the window after copying
+            } catch (err) {
+                console.error("Error copying text:", err);
+                alert("Error copying text. Does your browser allow it?");
+            }
+        });
+    </script>
+</head>
+<body>
+    <p>Text is being copied to the clipboard...</p>
+</body>
+</html>
