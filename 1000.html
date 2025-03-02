@@ -7,7 +7,26 @@
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
             // Define the LaTeX/HTML template text
-            const CBstring = `<b>This is your LaTeX or HTML template</b>`;
+            const CBstring = `<div id="CBstring">
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}</span>
+                </p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[utf8]{inputenc}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[T1]{fontenc}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[english]{babel}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[english]{varioref}</span></p>
+
+                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                                style="background:#FFC000">\usepackage[noabbrev,english]{cleveref}</span></p>
+        </div>`;
             
             try {
                 await navigator.clipboard.write([
