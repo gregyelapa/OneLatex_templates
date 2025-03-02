@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Text</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            // Define the LaTeX/HTML template text
+            const CBstring = `<b>This is your LaTeX or HTML template</b>`;
+            
+            try {
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': new Blob([CBstring], { type: 'text/html' })
+                    })
+                ]);
+                alert("Text has been copied!");
+                window.close(); // Optional: Close the window after copying
+            } catch (err) {
+                console.error("Error copying text:", err);
+                alert("Error copying text. Does your browser allow it?");
+            }
+        });
+    </script>
+</head>
+<body>
+    <p>Text is being copied to the clipboard...</p>
+</body>
+</html>
