@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
+    <title>OneLatex Template</title>
+    <script>
+        async function copyToClipboard(idTemplate) {
+            try {
+                const CBstring = document.getElementById(idTemplate).innerHTML;
+                console.log(CBstring);
+                await navigator.clipboard.write([new ClipboardItem({
+                    'text/html': new Blob([CBstring], { type: 'text/html' })
+                })]);
+
+                showNotification("✅ Text was copied successfully!", "success");
+            } catch (err) {
+                showNotification("❌ Error when copying!", "error");
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = type;
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>OneLatex Template</h1>
+        <p>Click the button below to copy the template and paste it into OneNote.</p>
+
+        <button><a href="index.html">Back to the homepage</a></button>
+
+        <!-- Bestätigungsnachricht -->
+        <div id="notification" class="notification"></div>
+
+        <div class="info-box">
+            ℹ️ <strong>General Appearance</strong><BR>
+            To create a more modern appearance, the template includes four packages. The parskip package removes
+            paragraph indentation and adds vertical spacing between paragraphs. The lmodern package replaces the default
+            Computer Modern font with Latin Modern, offering a broader character set and consistent rendering. The setspace
+            package, with the onehalfspacing option, increases the line spacing to 1.5, improving readability and
+            meeting academic or professional formatting standards. These adjustments affect spacing, font rendering, and
+            symbol availability, giving the template a more contemporary and structured layout. The
+            pifont package enables the use of special symbols, such as checkmarks and circled numbers.
+        </div>
+
+
+        <div class="copy-content" id="CBstring">
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage{parskip}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage{lmodern}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[onehalfspacing]{setspace} %The formal requirements for theses
+                    or dissertations are often set at 1.5 line spacing</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage{pifont}</span></p>
+        </div>
+        <button onclick="copyToClipboard('CBstring')">Copy to Clipboard</button>
+
+        <div class="info-box">
+            ℹ️ <strong>Colors and Frames</strong><BR>
+            To enhance the use of colors and framed content in the template, three key commands are included. The xcolor
+            package with the options [table,xcdraw] enables color support for tables and provides an extended set of
+            predefined colors. The framed package is used to create framed content, such as boxed text or highlighted
+            sections. It works in combination with the shaded environment, which allows background shading for text
+            blocks. The command \definecolor{shadecolor}{rgb}{0.7,0.85,1} specifically defines the shadecolor, which
+            determines the background color used within shaded environments from the framed package. This ensures that
+            the framed content can have a customized, colored background, making important sections more visually
+            distinct.
+        </div>
+
+        <div class="copy-content" id="CBstring2">
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[table,xcdraw]{xcolor}
+                </span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage{framed}</span>
+            </p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\definecolor{shadecolor}{rgb}{0.7,0.85,1} %light blue for
+                    shaded-environment with framed-package</span>
+            </p>
+        </div>
+        <button onclick="copyToClipboard('CBstring2')">Copy to Clipboard</button>
+
+        <div class="info-box">
+            ℹ️ <strong>Pagination Control</strong><BR>
+            The commands \clubpenalty, \widowpenalty, and \displaywidowpenalty control pagination in LaTeX by preventing
+            orphans (club lines) and widows in text and mathematical environments. \clubpenalty prevents a single line
+            from appearing at the bottom of a page, while \widowpenalty prevents the last line of a paragraph from
+            appearing alone at the top of a new page. \displaywidowpenalty applies the same rule specifically to
+            mathematical environments (e.g., equations). Setting these values to 10000 enforces strict prevention,
+            ensuring a more balanced and typographically clean document layout.
+        </div>
+
+        <div class="copy-content" id="CBstring3">
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span style="background:#FFC000">\clubpenalty =
+                    10000</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span style="background:#FFC000">\widowpenalty =
+                    10000</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\displaywidowpenalty = 10000</span></p>
+        </div>
+        <button onclick="copyToClipboard('CBstring3')">Copy to Clipboard</button>
+
+        <div class="info-box">
+            ℹ️ <strong>Line Breaking Adjustments</strong><BR>
+            \setlength{\emergencystretch}{2em} increases the flexibility of line breaking in LaTeX. It allows LaTeX to
+            slightly stretch lines (up to 2em) when it struggles to find an optimal line break, helping to reduce
+            Overfull \hbox warnings and improve text justification. This prevents text from extending beyond the right
+            margin of the page, which can otherwise cause layout issues. It is particularly useful for documents with
+            long words or justified text.
+        </div>
+
+        <div class="copy-content" id="CBstring4">
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\setlength{\emergencystretch}{2em}</span></p>
+        </div>
+        <button onclick="copyToClipboard('CBstring4')">Copy to Clipboard</button>
+
+    </div>
+</body>
+
+</html>

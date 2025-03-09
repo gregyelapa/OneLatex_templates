@@ -2,49 +2,75 @@
 <html lang="en">
 
 <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <link rel="stylesheet" href="styles.css">
-        <title>OneLatex template</title>
-        <script>
-                async function copyToClipboard() {
-                        const CBstring = document.getElementById('CBstring').innerHTML;
-                        console.log(CBstring);
-                        await navigator.clipboard.write([new ClipboardItem({
-                                'text/html': new Blob([CBstring], { type: 'text/html' })
-                        })]);
-                }
-        </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
+    <title>OneLatex Template</title>
+    <script>
+        async function copyToClipboard() {
+            try {
+                const CBstring = document.getElementById('CBstring').innerHTML;
+                console.log(CBstring);
+                await navigator.clipboard.write([new ClipboardItem({
+                    'text/html': new Blob([CBstring], { type: 'text/html' })
+                })]);
+
+                showNotification("✅ Text wurde erfolgreich kopiert!", "success");
+            } catch (err) {
+                showNotification("❌ Fehler beim Kopieren!", "error");
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = type;
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        }
+    </script>
 </head>
 
 <body>
-        <!-- This is an template for OneLatex that can be copied into the clipboard and pasted in OneNote -->
+    <div class="container">
+        <h1>OneLatex Template</h1>
+        <p>Click the button below to copy the template and paste it into OneNote.</p>
+
         <button><a href="index.html">Zurück zur Startseite</a></button>
-        <div>
-                <button onclick="copyToClipboard()">Copy to Clipboard</button>
-        </div>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+        <!-- Bestätigungsnachricht -->
+        <div id="notification" class="notification"></div>
+
         <div id="CBstring">
-                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
-                                style="background:#FFC000">\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}</span>
-                </p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}</span></p>
 
-                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
-                                style="background:#FFC000">\usepackage[utf8]{inputenc}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[utf8]{inputenc}</span></p>
 
-                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
-                                style="background:#FFC000">\usepackage[T1]{fontenc}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[T1]{fontenc}</span></p>
 
-                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
-                                style="background:#FFC000">\usepackage[english]{babel}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[english]{babel}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage{graphicx}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[colorlinks=true, linkcolor=black, citecolor=black,
+                    urlcolor=blue, filecolor=black]{hyperref}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\urlstyle{same}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[english]{varioref}</span></p>
 
-                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
-                                style="background:#FFC000">\usepackage[english]{varioref}</span></p>
-
-                <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
-                                style="background:#FFC000">\usepackage[noabbrev,english]{cleveref}</span></p>
+            <p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span
+                    style="background:#FFC000">\usepackage[noabbrev,english]{cleveref}</span></p>
         </div>
-
+    </div>
 </body>
 
 </html>

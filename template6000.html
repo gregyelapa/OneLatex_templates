@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
+    <title>OneLatex Template</title>
+    <script>
+        let selectedLanguage = "english"; // Globale Variable für die Sprache
+        let selectedCategory = "all"; // Globale Variable für die Filterung
+
+        const latexTemplates = [
+            {
+                title: "Basic Setup",
+                category: "core-packages",
+                description: "Essential packages for document structure, encoding, font settings, and language options.",
+                languages: {
+                    "english": [
+                        "\\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}",
+                        "\\usepackage[utf8]{inputenc}",
+                        "\\usepackage[T1]{fontenc}",
+                        "\\usepackage[english]{babel}",
+                        "\\usepackage{graphicx}",
+                        "\\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, filecolor=black]{hyperref}",
+                        "\\urlstyle{same}",
+                        "\\usepackage[english]{varioref}",
+                        "\\usepackage[noabbrev,english]{cleveref}"
+                    ],
+                    "german": [
+                        "\\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}",
+                        "\\usepackage[utf8]{inputenc}",
+                        "\\usepackage[T1]{fontenc}",
+                        "\\usepackage[ngerman]{babel}",
+                        "\\usepackage{graphicx}",
+                        "\\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, filecolor=black]{hyperref}",
+                        "\\urlstyle{same}",
+                        "\\usepackage[ngerman]{varioref}",
+                        "\\usepackage[noabbrev,german]{cleveref}"
+                    ]
+                },
+                selectedLanguage: "english"
+            },
+            {
+                title: "General Appearance",
+                category: "appearance",
+                description: "To create a more modern appearance, the template includes four packages...",
+                commands: [
+                    "\\usepackage{parskip}",
+                    "\\usepackage{lmodern}",
+                    "\\usepackage[onehalfspacing]{setspace}",
+                    "\\usepackage{pifont}"
+                ]
+            },
+            {
+                title: "Colors and Frames",
+                category: "appearance",
+                description: "To enhance the use of colors and framed content in the template, three key commands are included...",
+                commands: [
+                    "\\usepackage[table,xcdraw]{xcolor}",
+                    "\\usepackage{framed}",
+                    "\\definecolor{shadecolor}{rgb}{0.7,0.85,1}"
+                ]
+            },
+            {
+                title: "Pagination Control",
+                category: "appearance",
+                description: "The commands \\clubpenalty, \\widowpenalty, and \\displaywidowpenalty control pagination in LaTeX...",
+                commands: [
+                    "\\clubpenalty = 10000",
+                    "\\widowpenalty = 10000",
+                    "\\displaywidowpenalty = 10000"
+                ]
+            },
+            {
+                title: "Line Breaking Adjustments",
+                category: "appearance",
+                description: "\\setlength{\\emergencystretch}{2em} increases the flexibility of line breaking in LaTeX...",
+                commands: [
+                    "\\setlength{\\emergencystretch}{2em}"
+                ]
+            },
+            {
+                title: "array-Package",
+                category: "tables",
+                description: "array-package",
+                commands: [
+                    "\\usepackage{array}"
+                ]
+            },
+            {
+                title: "tabularx-Package",
+                category: "tables",
+                description: "array-package",
+                commands: [
+                    "\\usepackage{tabularx}"
+                ]
+            },
+            {
+                title: "longtable-Package",
+                category: "tables",
+                description: "array-package",
+                commands: [
+                    "\\usepackage{longtable}"
+                ]
+            },
+            {
+                title: "Integrate-PDF",
+                category: "pdf",
+                description: "array-package",
+                commands: [
+                    "\\usepackage{pdfpages}",
+
+                ]
+            },
+            {
+                title: "Integrate-PDF",
+                category: "pdf",
+                description: "array-package",
+                commands: [
+                    "\\usepackage{pdflscape}",
+
+                ]
+            },
+            {
+                title: "Bibliography",
+                category: "bibliography",
+                description: "bibliography",
+                commands: [
+                    "\\usepackage[backend=biber, style=numeric-comp]{biblatex}",
+
+                ]
+            },
+            {
+                title: "Section Numbering Depth",
+                category: "four-five-level",
+                description: "The command \setcounter{secnumdepth}{5} controls which section levels receive automatic numbering. By setting it to `5`, LaTeX includes numbering for \paragraph and \subparagraph, which are normally unnumbered. This extends the default numbering beyond \section, \subsection, and \subsubsection.",
+                commands: [
+                    "\\setcounter{secnumdepth}{5}"
+                ]
+            },
+            {
+                title: "Redefining Paragraphs",
+                category: "four-five-level",
+                description: "By default, \paragraph and \subparagraph in LaTeX place the text directly after the title in the same line. The custom commands redefine them to behave more like \section, \subsection, and \subsubsection by ensuring the text starts on a new line. This is done by modifying \@startsection, setting a negative space before the heading and a small positive space after it. The bold font style (\\bfseries) makes the headings stand out. Setting the indentation to 0mm keeps them aligned with the left margin, like standard section titles. This creates a consistent heading structure across all levels.",
+                commands: [
+                    "\\makeatletter",
+                    "\\renewcommand\\paragraph{\\@startsection{paragraph}{3}{0mm}{-\\baselineskip}{.1\\baselineskip}{\\normalfont\\normalsize\\bfseries}}",
+                    "\\renewcommand\\subparagraph{\\@startsection{subparagraph}{4}{0mm}{-\\baselineskip}{.1\\baselineskip}{\\normalfont\\normalsize\\bfseries}}",
+                    "\\makeatother"
+                ]
+            },
+            {
+                title: "Crefname Adjustments",
+                category: "four-five-level",
+                description: "By default, \paragraph and \subparagraph in LaTeX place the text directly after the title in the same line. The custom commands redefine them to behave more like \section, \subsection, and \subsubsection by ensuring the text starts on a new line. This is done by modifying \@startsection, setting a negative space before the heading and a small positive space after it. The bold font style (\\bfseries) makes the headings stand out. Setting the indentation to 0mm keeps them aligned with the left margin, like standard section titles. This creates a consistent heading structure across all levels.",
+                languages: {
+                    "english": [
+                        "\\crefname{paragraph}{Section}{Sections}",
+                        "\\crefname{subparagraph}{Section}{Sections}"
+                    ],
+                    "german": [
+                        "\\crefname{paragraph}{Abschnitt}{Abschnitte}",
+                        "\\crefname{subparagraph}{Abschnitt}{Abschnitte}"
+                    ]
+                },
+                selectedLanguage: "english"
+            }
+        ];
+
+        function generateContent() {
+            const container = document.getElementById("content-container");
+            container.innerHTML = "";
+
+            latexTemplates.filter(template => selectedCategory === "all" || template.category === selectedCategory)
+                .forEach((template, index) => {
+                    let contentHTML = "";
+                    if (template.languages) {
+                        const selectedCommands = template.languages[selectedLanguage] || [];
+                        contentHTML = `
+                            <div class="info-box">
+                                ℹ️ <strong>${template.title}</strong><br>
+                                ${template.description}
+                            </div>
+                            <div class="copy-content" id="CBstring${index}">
+                                ${selectedCommands.map(cmd => `<p style="margin:0;font-family:Calibri;font-size:11.0pt"><span style="background:#FFC000">${cmd}</span></p>`).join('')}
+                            </div>
+                            <button onclick="copyToClipboard('CBstring${index}')">Copy to Clipboard</button>
+                        `;
+                    } else {
+                        const commands = template.commands || [];
+                        contentHTML = `
+                            <div class="info-box">
+                                ℹ️ <strong>${template.title}</strong><br>
+                                ${template.description}
+                            </div>
+                            <div class="copy-content" id="CBstring${index}">
+                                ${commands.map(cmd => `<p style="margin:0;font-family:Calibri;font-size:11.0pt"><span style="background:#FFC000">${cmd}</span></p>`).join('')}
+                            </div>
+                            <button onclick="copyToClipboard('CBstring${index}')">Copy to Clipboard</button>
+                        `;
+                    }
+                    container.innerHTML += contentHTML;
+                });
+        }
+
+        function updateLanguage() {
+            selectedLanguage = document.getElementById("global-lang-select").value;
+            generateContent();
+        }
+
+        function updateFilter() {
+            selectedCategory = document.getElementById("filter-select").value;
+            generateContent();
+        }
+
+        async function copyAllToClipboard() {
+            try {
+                const elements = document.querySelectorAll(".copy-content");
+                let copiedContent = "";
+
+                elements.forEach(el => {
+                    copiedContent += el.innerHTML + "<br>"; // Fügt HTML-Inhalt jedes Elements hinzu
+                });
+
+                await navigator.clipboard.write([
+                    new ClipboardItem({ 'text/html': new Blob([copiedContent], { type: 'text/html' }) })
+                ]);
+
+                showNotification("✅ All filtered commands copied successfully!", "success");
+            } catch (err) {
+                showNotification("❌ Error copying all commands!", "error");
+            }
+        }
+
+        async function copyToClipboard(idTemplate) {
+            try {
+                const CBstring = document.getElementById(idTemplate).innerHTML;
+                await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([CBstring], { type: 'text/html' }) })]);
+                showNotification("✅ Text copied successfully!", "success");
+            } catch (err) {
+                showNotification("❌ Error copying text!", "error");
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.className = type;
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        }
+    </script>
+</head>
+
+<body onload="generateContent()">
+    <div class="container">
+        <h1>OneLatex Template</h1>
+        <p>Click the button below to copy the template and paste it into OneNote.</p>
+
+        <label for="global-lang-select">Select language:</label>
+        <select id="global-lang-select" onchange="updateLanguage()">
+            <option value="english" selected>English</option>
+            <option value="german">Deutsch</option>
+        </select>
+
+        <label for="filter-select">Filter:</label>
+        <select id="filter-select" onchange="updateFilter()">
+            <option value="all" selected>All</option>
+            <option value="core-packages">Core Packages</option>
+            <option value="appearance">Appearance</option>
+            <option value="tables">Tables</option>
+            <option value="pdf">PDF-Integration</option>
+            <option value="bibliography">Bibliography</option>
+            <option value="four-five-level">paragraph and subparagraph</option>
+        </select>
+
+        <button><a href="index.html">Back to the homepage</a></button>
+        <button onclick="copyAllToClipboard()">Copy All Filtered Commands</button>
+
+        <div id="notification" class="notification"></div>
+        <div id="content-container"></div>
+    </div>
+</body>
+
+</html>
