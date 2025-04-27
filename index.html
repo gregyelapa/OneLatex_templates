@@ -278,12 +278,39 @@
             <option value="four-five-level">paragraph and subparagraph</option>
         </select>
 
-        <button><a href="index.html">Back to the homepage</a></button>
+        <!-- Button: Close window or redirect -->
+        <button id="returnButton" class="btn btn-primary btn-lg mb-3" onclick="closeOrRedirect()">
+            <span id="buttonText">Close</span>
+        </button>
         <button onclick="copyAllToClipboard()">Copy All Filtered Commands</button>
 
         <div id="notification" class="notification"></div>
         <div id="content-container"></div>
     </div>
+    <!-- JavaScript for button behavior -->
+    <script>
+        function closeOrRedirect() {
+            const button = document.getElementById('returnButton');
+            const buttonText = document.getElementById('buttonText');
+
+            // Disable the button to prevent multiple clicks
+            button.disabled = true;
+
+            // Add spinner and update button text
+            buttonText.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Returning...
+      `;
+
+            // Attempt to close the window
+            window.close();
+
+            // Fallback: Redirect to homepage if window.close() is blocked
+            setTimeout(() => {
+                window.location.href = '/index.html';
+            }, 500);
+        }
+    </script>
 </body>
 
 </html>
