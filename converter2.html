@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Special Character Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    input, button, select {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      max-width: 400px;
+      font-size: 1rem;
+    }
+    .output {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Special Character Converter</h2>
+
+  <label for="latexInput">Enter text for LaTeX label:</label>
+  <input type="text" id="latexInput">
+  <label for="latexStep">Select processing step (1–5):</label>
+  <select id="latexStep">
+    <option value="1">Step 1</option>
+    <option value="2">Step 2</option>
+    <option value="3">Step 3</option>
+    <option value="4">Step 4</option>
+    <option value="5" selected>Step 5</option>
+  </select>
+  <button onclick="handleLatexConversion()">Convert to LaTeX Label</button>
+  <div class="output" id="latexOutput"></div>
+
+  <label for="filenameInput">Enter text for filename:</label>
+  <input type="text" id="filenameInput">
+  <label for="filenameStep">Select processing step (1–5):</label>
+  <select id="filenameStep">
+    <option value="1">Step 1</option>
+    <option value="2">Step 2</option>
+    <option value="3">Step 3</option>
+    <option value="4">Step 4</option>
+    <option value="5" selected>Step 5</option>
+  </select>
+  <button onclick="handleFilenameConversion()">Convert to Filename</button>
+  <div class="output" id="filenameOutput"></div>
+
+  <script>
+    // Mapping for special characters → ASCII equivalents
+    const mapping = {
+      "ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss",
+      "é": "e", "è": "e", "ê": "e", "ë": "e", "ç": "c",
+      "ñ": "n", "á": "a", "í": "i", "ó": "o", "ú": "u",
+      "à": "a", "ì": "i", "ò": "o", "ù": "u",
+      "ã": "a", "õ": "o",
+      "ø": "oe", "å": "aa", "æ": "ae",
+      "đ": "d", "ð": "d", "þ": "th",
+      "ł": "l", "ń": "n", "ś": "s", "ź": "z", "ż": "z",
+      "č": "c", "ď": "d", "ě": "e", "ň": "n", "ř": "r",
+      "š": "s", "ť": "t", "ů": "u", "ž": "z",
+      "ő": "o", "ű": "u",
+      "ș": "s", "ț": "t",
+      "ı": "i", "ğ": "g", "ş": "s"
+    };
+
+    const regex = new RegExp(Object.keys(mapping).join("|"), "g");
+
+    function replaceSpecialChars(text) {
+      return text.replace(regex, match => mapping[match]);
+    }
+
+    function removeDiacritics(text) {
+      return text.normalize("NFKD").replace(/\p{M}/gu, "");
+    }
+
+    function cleanText(text, steps = 5) {
+      if (steps >= 1) text = replaceSpecialChars(text);
+      if (steps >= 2) text = removeDiacritics(text);
+      if (steps >= 3) text = text.replace(/[^a-zA-Z0-9_]/g, "_");
+      if (steps >= 4) text = text.replace(/__+/g, "_").replace(/--+/g, "-");
+      if (steps >= 5) text = text.replace(/^_|_$/g, "").replace(/^-|-$|^\./g, "");
+      return text;
+    }
+
+    function convertToLatexLabel(text, steps) {
+      return cleanText(text, steps).toLowerCase();
+    }
+
+    function convertToFilename(text, steps) {
+      return cleanText(text, steps);
+    }
+
+    function handleLatexConversion() {
+      const input = document.getElementById("latexInput").value;
+      const steps = parseInt(document.getElementById("latexStep").value);
+      const output = convertToLatexLabel(input, steps);
+      document.getElementById("latexOutput").textContent = "Result: " + output;
+    }
+
+    function handleFilenameConversion() {
+      const input = document.getElementById("filenameInput").value;
+      const steps = parseInt(document.getElementById("filenameStep").value);
+      const output = convertToFilename(input, steps);
+      document.getElementById("filenameOutput").textContent = "Result: " + output;
+    }
+  </script>
+</body>
+</html>
