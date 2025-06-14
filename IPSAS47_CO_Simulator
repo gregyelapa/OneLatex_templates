@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFRS 15 Cost-to-Cost Methode</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .main-parameters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .performance-obligations {
+            margin-bottom: 30px;
+        }
+        
+        .po-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .po-container {
+            border: 2px solid #007bff;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+            background-color: #f8f9ff;
+        }
+        
+        .po-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .po-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+        }
+        
+        .po-item h4 {
+            margin-top: 0;
+            color: #28a745;
+        }
+        
+        .parameter-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        
+        input, select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .cost-inputs {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+        
+        .cost-inputs h3 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .export-buttons {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .export-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .export-btn:hover {
+            background-color: #218838;
+        }
+        
+        .calculate-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 13px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: right;
+        }
+        
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .po-header-cell {
+            background-color: #28a745 !important;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .currency {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .percentage {
+            color: #007bff;
+        }
+        
+        .total-row {
+            background-color: #e9ecef !important;
+            font-weight: bold;
+            border-top: 2px solid #007bff;
+        }
+        
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f3ff;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .summary h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .validation-info {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .copy-feedback {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 IFRS 15 Cost-to-Cost Methode</h1>
+        
+        <div class="main-parameters">
+            <div class="parameter-group">
+                <label for="contractSum">Vertragssumme (€):</label>
+                <input type="number" id="contractSum" value="5000000" min="0" step="1000">
+            </div>
+            
+            <div class="parameter-group">
+                <label for="projectYears">Projektlaufzeit (Jahre):</label>
+                <input type="number" id="projectYears" value="5" min="1" max="20" step="1">
+            </div>
+            
+            <div class="parameter-group">
+                <label for="numPO">Anzahl Performance Obligations:</label>
+                <select id="numPO">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="performance-obligations">
+            <div class="po-header">
+                🎯 Performance Obligations
+            </div>
+            <div class="po-container">
+                <div id="validationInfo" class="validation-info"></div>
+                <div class="po-grid" id="poGrid">
+                    <!-- Wird dynamisch generiert -->
+                </div>
+            </div>
+        </div>
+
+        <div class="cost-inputs">
+            <h3>💰 Kosten pro Jahr eingeben</h3>
+            <div class="cost-grid" id="costGrid">
+                <!-- Wird dynamisch generiert -->
+            </div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateTable()">📈 Berechnung durchführen</button>
+
+        <div class="export-buttons" id="exportButtons" style="display: none;">
+            <button class="export-btn" onclick="copyTableToClipboard()">📋 Für Excel kopieren</button>
+            <button class="export-btn" onclick="downloadAsCSV()">💾 Als CSV herunterladen</button>
+        </div>
+        
+        <div id="copyFeedback" class="copy-feedback">
+            ✅ Tabelle wurde in die Zwischenablage kopiert! Jetzt in Excel mit Strg+V einfügen.
+        </div>
+
+        <div class="table-container" id="tableContainer" style="display: none;">
+            <table id="calculationTable">
+                <thead id="tableHead">
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+                <tfoot id="tableFooter">
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="summary" id="summary" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function formatPercentage(value) {
+            return (value * 100).toFixed(1) + '%';
+        }
+
+        function generatePOGrid() {
+            const numPO = parseInt(document.getElementById('numPO').value);
+            const poGrid = document.getElementById('poGrid');
+            
+            poGrid.innerHTML = '';
+            
+            const defaultShare = numPO === 1 ? 100 : parseFloat((100 / numPO).toFixed(1));
+            
+            for (let i = 1; i <= numPO; i++) {
+                const poItem = document.createElement('div');
+                poItem.className = 'po-item';
+                
+                let shareValue;
+                if (numPO === 1) {
+                    shareValue = 100;
+                } else if (i === numPO) {
+                    shareValue = parseFloat((100 - (defaultShare * (numPO - 1))).toFixed(1));
+                } else {
+                    shareValue = defaultShare;
+                }
+                
+                poItem.innerHTML = `
+                    <h4>Performance Obligation ${i}</h4>
+                    <div class="parameter-group">
+                        <label for="po${i}Name">Bezeichnung:</label>
+                        <input type="text" id="po${i}Name" value="PO ${i}" placeholder="z.B. Software-Entwicklung">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="po${i}Share">Anteil am Gesamterlös (%):</label>
+                        <input type="number" id="po${i}Share" value="${shareValue}" 
+                               min="0" max="100" step="0.1" ${numPO === 1 ? 'readonly' : ''}>
+                    </div>
+                `;
+                poGrid.appendChild(poItem);
+                
+                // Event Listener hinzufügen
+                document.getElementById(`po${i}Share`).addEventListener('input', validateShares);
+            }
+            
+            // generateCostGrid() nicht mehr aufrufen, um Kosten beizubehalten
+            validateShares();
+        }
+
+        function generateCostGrid() {
+            const years = parseInt(document.getElementById('projectYears').value) || 5;
+            const costGrid = document.getElementById('costGrid');
+            
+            // Speichere aktuelle Werte vor dem Neuaufbau
+            const currentValues = {};
+            for (let i = 1; i <= 20; i++) { // Max 20 Jahre
+                const input = document.getElementById(`cost${i}`);
+                if (input) {
+                    currentValues[i] = input.value;
+                }
+            }
+            
+            costGrid.innerHTML = '';
+            
+            for (let i = 1; i <= years; i++) {
+                const costItem = document.createElement('div');
+                costItem.className = 'parameter-group';
+                // Verwende gespeicherten Wert, falls vorhanden, sonst Standardwert
+                const defaultValue = currentValues[i] || (i === 1 ? 800000 : (i === 2 ? 1200000 : (i === 3 ? 1000000 : (i === 4 ? 600000 : 400000))));
+                costItem.innerHTML = `
+                    <label for="cost${i}">Kosten Jahr ${i} (€):</label>
+                    <input type="number" id="cost${i}" value="${defaultValue}" min="0" step="1000">
+                `;
+                costGrid.appendChild(costItem);
+            }
+        }
+
+        function validateShares() {
+            const numPO = parseInt(document.getElementById('numPO').value);
+            const validationInfo = document.getElementById('validationInfo');
+            
+            if (numPO === 1) {
+                validationInfo.innerHTML = '✅ Bei einer Performance Obligation ist der Anteil automatisch 100%.';
+                return true;
+            }
+            
+            let totalShare = 0;
+            for (let i = 1; i <= numPO; i++) {
+                const share = parseFloat(document.getElementById(`po${i}Share`).value) || 0;
+                totalShare += share;
+            }
+            
+            if (Math.abs(totalShare - 100) < 0.1) {
+                validationInfo.innerHTML = '✅ Anteile summieren sich korrekt zu 100%.';
+                return true;
+            } else {
+                validationInfo.innerHTML = `⚠️ Anteile summieren sich zu ${totalShare.toFixed(1)}%. Sie müssen genau 100% ergeben.`;
+                return false;
+            }
+        }
+
+        function calculateTable() {
+            if (!validateShares()) {
+                alert('Bitte korrigieren Sie die Anteile der Performance Obligations, sodass sie sich zu 100% summieren.');
+                return;
+            }
+
+            const contractSum = parseFloat(document.getElementById('contractSum').value) || 0;
+            const years = parseInt(document.getElementById('projectYears').value) || 5;
+            const numPO = parseInt(document.getElementById('numPO').value);
+
+            // Kosten sammeln
+            const costs = [];
+            let totalCosts = 0;
+            for (let i = 1; i <= years; i++) {
+                const cost = parseFloat(document.getElementById(`cost${i}`).value) || 0;
+                costs.push(cost);
+                totalCosts += cost;
+            }
+
+            if (totalCosts === 0) {
+                alert('Bitte geben Sie Kosten für mindestens ein Jahr ein.');
+                return;
+            }
+
+            // PO Daten sammeln
+            const poData = [];
+            for (let i = 1; i <= numPO; i++) {
+                const name = document.getElementById(`po${i}Name`).value || `PO ${i}`;
+                const share = parseFloat(document.getElementById(`po${i}Share`).value) / 100 || 0;
+                poData.push({
+                    name: name,
+                    share: share,
+                    revenue: contractSum * share
+                });
+            }
+
+            // Tabelle erstellen
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+            const tableFooter = document.getElementById('tableFooter');
+
+            // Header
+            let headerHTML = '<tr><th>Jahr</th><th>Kosten</th><th>Kumulierte Kosten</th><th>Fortschritt (%)</th>';
+            for (const po of poData) {
+                headerHTML += `<th class="po-header-cell">${po.name} Kumuliert</th>`;
+            }
+            headerHTML += '<th>Gesamterlös Kumuliert</th>';
+            for (const po of poData) {
+                headerHTML += `<th class="po-header-cell">${po.name} Periode</th>`;
+            }
+            headerHTML += '<th>Gesamterlös Periode</th><th>Ergebnis Periode</th></tr>';
+            tableHead.innerHTML = headerHTML;
+
+            // Body
+            tableBody.innerHTML = '';
+            let cumulativeCost = 0;
+            let previousProgress = 0;
+            let previousRevenues = poData.map(() => 0);
+            let previousTotalRevenue = 0;
+
+            for (let year = 0; year < years; year++) {
+                const row = document.createElement('tr');
+                
+                // Jahr und Kosten
+                cumulativeCost += costs[year];
+                const progress = cumulativeCost / totalCosts;
+                
+                let rowHTML = `<td>${year + 1}</td>`;
+                rowHTML += `<td class="currency">${formatCurrency(costs[year])}</td>`;
+                rowHTML += `<td class="currency">${formatCurrency(cumulativeCost)}</td>`;
+                rowHTML += `<td class="percentage">${formatPercentage(progress)}</td>`;
+                
+                // Kumulierte Erlöse pro PO
+                const currentRevenues = [];
+                let totalCumulativeRevenue = 0;
+                for (const po of poData) {
+                    const cumulativeRevenue = po.revenue * progress;
+                    currentRevenues.push(cumulativeRevenue);
+                    totalCumulativeRevenue += cumulativeRevenue;
+                    rowHTML += `<td class="currency">${formatCurrency(cumulativeRevenue)}</td>`;
+                }
+                rowHTML += `<td class="currency"><strong>${formatCurrency(totalCumulativeRevenue)}</strong></td>`;
+                
+                // Periodenerlöse pro PO
+                let totalPeriodRevenue = 0;
+                for (let i = 0; i < poData.length; i++) {
+                    const periodRevenue = currentRevenues[i] - previousRevenues[i];
+                    totalPeriodRevenue += periodRevenue;
+                    rowHTML += `<td class="currency">${formatCurrency(periodRevenue)}</td>`;
+                }
+                rowHTML += `<td class="currency"><strong>${formatCurrency(totalPeriodRevenue)}</strong></td>`;
+                
+                // Periodenergebnis
+                const periodResult = totalPeriodRevenue - costs[year];
+                rowHTML += `<td class="currency" style="color: ${periodResult >= 0 ? 'green' : 'red'}">${formatCurrency(periodResult)}</td>`;
+                
+                row.innerHTML = rowHTML;
+                tableBody.appendChild(row);
+                
+                // Für nächste Iteration speichern
+                previousRevenues = [...currentRevenues];
+                previousTotalRevenue = totalCumulativeRevenue;
+                previousProgress = progress;
+            }
+
+            // Footer (Summenzeile)
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            let totalRowHTML = '<td><strong>Gesamt</strong></td>';
+            totalRowHTML += `<td class="currency"><strong>${formatCurrency(totalCosts)}</strong></td>`;
+            totalRowHTML += `<td class="currency"><strong>${formatCurrency(totalCosts)}</strong></td>`;
+            totalRowHTML += `<td class="percentage"><strong>100,0%</strong></td>`;
+            
+            // Kumulierte Summen (= Vertragserlöse)
+            for (const po of poData) {
+                totalRowHTML += `<td class="currency"><strong>${formatCurrency(po.revenue)}</strong></td>`;
+            }
+            totalRowHTML += `<td class="currency"><strong>${formatCurrency(contractSum)}</strong></td>`;
+            
+            // Periodensummen
+            for (const po of poData) {
+                totalRowHTML += `<td class="currency"><strong>${formatCurrency(po.revenue)}</strong></td>`;
+            }
+            totalRowHTML += `<td class="currency"><strong>${formatCurrency(contractSum)}</strong></td>`;
+            
+            // Gesamtergebnis
+            const totalResult = contractSum - totalCosts;
+            totalRowHTML += `<td class="currency" style="color: ${totalResult >= 0 ? 'green' : 'red'}"><strong>${formatCurrency(totalResult)}</strong></td>`;
+            
+            totalRow.innerHTML = totalRowHTML;
+            tableFooter.innerHTML = '';
+            tableFooter.appendChild(totalRow);
+
+            // Zusammenfassung
+            const summary = document.getElementById('summary');
+            let summaryHTML = `
+                <h3>📈 Zusammenfassung Cost-to-Cost Methode</h3>
+                <p><strong>Vertragssumme:</strong> ${formatCurrency(contractSum)}</p>
+                <p><strong>Gesamtkosten:</strong> ${formatCurrency(totalCosts)}</p>
+                <p><strong>Gesamtergebnis:</strong> ${formatCurrency(totalResult)} (${((totalResult/contractSum)*100).toFixed(1)}% Marge)</p>
+                <hr>
+                <h4>Performance Obligations:</h4>
+            `;
+            
+            for (const po of poData) {
+                summaryHTML += `<p><strong>${po.name}:</strong> ${formatCurrency(po.revenue)} (${(po.share*100).toFixed(1)}% Anteil)</p>`;
+            }
+            
+            summary.innerHTML = summaryHTML;
+
+            // Elemente anzeigen
+            document.getElementById('exportButtons').style.display = 'block';
+            document.getElementById('tableContainer').style.display = 'block';
+            document.getElementById('summary').style.display = 'block';
+        }
+
+        function copyTableToClipboard() {
+            const table = document.getElementById('calculationTable');
+            let tableText = '';
+            
+            // Header kopieren
+            const headerRow = table.querySelector('thead tr');
+            const headerCells = headerRow.querySelectorAll('th');
+            headerCells.forEach((cell, index) => {
+                tableText += cell.textContent;
+                if (index < headerCells.length - 1) tableText += '\t';
+            });
+            tableText += '\n';
+            
+            // Body kopieren
+            const bodyRows = table.querySelectorAll('tbody tr');
+            bodyRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach((cell, index) => {
+                    let cellText = cell.textContent;
+                    // Euro-Zeichen und Formatierung für Excel entfernen
+                    cellText = cellText.replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.');
+                    if (cellText.includes('%')) {
+                        cellText = cellText.replace('%', '');
+                    }
+                    tableText += cellText;
+                    if (index < cells.length - 1) tableText += '\t';
+                });
+                tableText += '\n';
+            });
+            
+            // Footer kopieren
+            const footerRow = table.querySelector('tfoot tr');
+            if (footerRow) {
+                const footerCells = footerRow.querySelectorAll('td');
+                footerCells.forEach((cell, index) => {
+                    let cellText = cell.textContent;
+                    cellText = cellText.replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.');
+                    if (cellText.includes('%')) {
+                        cellText = cellText.replace('%', '');
+                    }
+                    tableText += cellText;
+                    if (index < footerCells.length - 1) tableText += '\t';
+                });
+                tableText += '\n';
+            }
+            
+            // In Zwischenablage kopieren
+            navigator.clipboard.writeText(tableText).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.style.display = 'block';
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                alert('Kopieren fehlgeschlagen. Bitte verwenden Sie Strg+C zum manuellen Kopieren.');
+            });
+        }
+
+        function downloadAsCSV() {
+            const table = document.getElementById('calculationTable');
+            let csvContent = '\ufeff'; // BOM für Excel UTF-8
+            
+            // Header
+            const headerRow = table.querySelector('thead tr');
+            const headerCells = headerRow.querySelectorAll('th');
+            const headerData = Array.from(headerCells).map(cell => 
+                '"' + cell.textContent.replace(/"/g, '""') + '"'
+            );
+            csvContent += headerData.join(';') + '\n';
+            
+            // Body
+            const bodyRows = table.querySelectorAll('tbody tr');
+            bodyRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = Array.from(cells).map(cell => {
+                    let cellText = cell.textContent;
+                    // Für CSV: Zahlen im deutschen Format
+                    if (cellText.includes('€')) {
+                        cellText = cellText.replace(/[€\s]/g, '').replace(/\./g, '');
+                    }
+                    if (cellText.includes('%')) {
+                        cellText = cellText.replace('.', ',');
+                    }
+                    return '"' + cellText.replace(/"/g, '""') + '"';
+                });
+                csvContent += rowData.join(';') + '\n';
+            });
+            
+            // Footer
+            const footerRow = table.querySelector('tfoot tr');
+            if (footerRow) {
+                const footerCells = footerRow.querySelectorAll('td');
+                const footerData = Array.from(footerCells).map(cell => {
+                    let cellText = cell.textContent;
+                    if (cellText.includes('€')) {
+                        cellText = cellText.replace(/[€\s]/g, '').replace(/\./g, '');
+                    }
+                    if (cellText.includes('%')) {
+                        cellText = cellText.replace('.', ',');
+                    }
+                    return '"' + cellText.replace(/"/g, '""') + '"';
+                });
+                csvContent += footerData.join(';') + '\n';
+            }
+            
+            // CSV-Datei herunterladen
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'IFRS15_Cost-to-Cost_Methode.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Event Listeners
+        document.getElementById('projectYears').addEventListener('change', generateCostGrid);
+        document.getElementById('numPO').addEventListener('change', generatePOGrid);
+
+        // Initialisierung
+        generatePOGrid();
+        generateCostGrid(); // Kosten-Grid separat initialisieren
+    </script>
+</body>
+</html>
