@@ -713,7 +713,7 @@
 
         // Initialisierung
         generatePOGrid();
-        generateCostGrid(); // Kosten-Grid separat initialisieren
+        generateCostGrid(); // Kosten-Grid sep. initialisieren
     </script>
 </body>
 </html>
