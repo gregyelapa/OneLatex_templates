@@ -257,7 +257,13 @@
 </head>
 
 <body onload="generateContent()">
-    <div class="container">
+    html<div class="container" style="position: relative;">
+        <!-- Close Button innerhalb des Containers rechts oben -->
+        <button id="returnButton" class="btn btn-primary" onclick="closeOrRedirect()"
+            style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+            <span id="buttonText">Close</span>
+        </button>
+
         <h1>OneLatex Package Generator for OneNote</h1>
         <p>Click the button below to copy the template and paste it into OneNote.</p>
 
@@ -278,11 +284,8 @@
             <option value="four-five-level">paragraph and subparagraph</option>
         </select>
 
-        <!-- Button: Close window or redirect -->
+        <!-- Nur noch der Copy-Button -->
         <div class="d-flex flex-column align-items-center">
-            <button id="returnButton" class="btn btn-primary btn-lg mb-3" onclick="closeOrRedirect()">
-                <span id="buttonText">Close</span>
-            </button>
             <button class="btn btn-secondary btn-lg" onclick="copyAllToClipboard()">Copy All Filtered Commands</button>
         </div>
         <div id="notification" class="notification"></div>
