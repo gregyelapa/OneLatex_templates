@@ -1,193 +1,732 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Special Character Converter</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
-    }
-    input, button, select {
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      width: 100%;
-      max-width: 400px;
-      font-size: 1rem;
-    }
-    .output {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    .step-info {
-      background: #f0f0f0;
-      padding: 1rem;
-      margin-top: 1rem;
-      max-width: 800px;
-    }
-    table {
-      border-collapse: collapse;
-      margin-top: 1rem;
-      font-size: 0.95rem;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 0.3rem 0.6rem;
-      text-align: left;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaTeX Label & Filename Converter</title>
+    <style>
+        :root {
+            /* Color palette from the provided image */
+            --primary-purple: #7719AA;
+            --secondary-teal: #5FBAAF;
+            --secondary-gold: #AB791A;
+            --light-purple: #F3E8FB;
+            --light-teal: #E8F7F5;
+            --light-gold: #FFF8E8;
+            --dark-gray: #333333;
+            --medium-gray: #666666;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            --error-red: #D32F2F;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+        
+        h1 {
+            color: var(--primary-purple);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .converter-selector {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(119, 25, 170, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .converter-selector h2 {
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .selector-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .selector-button {
+            background: var(--primary-purple);
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            flex: 1;
+            max-width: 250px;
+        }
+        
+        .selector-button:hover {
+            background: #8A2AC8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(119, 25, 170, 0.3);
+        }
+        
+        .selector-button.active {
+            background: var(--secondary-teal);
+        }
+        
+        .converter-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .converter-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .converter-box {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--primary-purple);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        
+        .info-box {
+            background: var(--light-purple);
+            border-left: 4px solid var(--primary-purple);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: var(--primary-purple);
+            font-weight: 500;
+        }
+        
+        .info-box ul {
+            margin: 10px 0;
+            padding-left: 25px;
+            color: var(--dark-gray);
+        }
+        
+        .info-box li {
+            margin-bottom: 5px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #E0E0E0;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: var(--white);
+            color: var(--dark-gray);
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-teal);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .step-selector {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .step-selector label {
+            margin-right: 15px;
+            display: inline-block;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+        
+        .step-selector input[type="radio"] {
+            margin-right: 5px;
+            accent-color: var(--primary-purple);
+        }
+        
+        .step-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            border-left: 4px solid var(--secondary-gold);
+        }
+        
+        .step-output h3 {
+            margin-top: 0;
+            color: var(--dark-gray);
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        .step-output pre {
+            background: var(--white);
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--dark-gray);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .final-result {
+            background: var(--light-teal);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            border-left: 4px solid var(--secondary-teal);
+            position: relative;
+        }
+        
+        .final-result strong {
+            color: var(--secondary-teal);
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary-teal);
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-button:hover {
+            background: #4A9A90;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(95, 186, 175, 0.3);
+        }
+        
+        .copy-button.copied {
+            background: var(--accent-green);
+        }
+        
+        .copy-button svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        button {
+            background: var(--primary-purple);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #8A2AC8;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(119, 25, 170, 0.2);
+        }
+        
+        .error-message {
+            color: var(--error-red);
+        }
+        
+        @media (max-width: 768px) {
+            .selector-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        /* Character mapping reference section */
+        .reference-section {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 40px;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .reference-section.active {
+            display: block;
+        }
+        
+        .reference-section h3 {
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .footnote {
+            font-size: 0.8em;
+            color: var(--medium-gray);
+            margin-bottom: 15px;
+        }
+        
+        .mapping-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .mapping-item {
+            background: var(--light-gray);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .mapping-item strong {
+            color: var(--primary-purple);
+        }
+        
+        sup {
+            color: var(--secondary-gold);
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <h2>Special Character Converter</h2>
-<hr>
-<h3>LaTeX Label Conversion</h3>
-
-  <label for="latexInput">Enter text for LaTeX label:</label>
-  <input type="text" id="latexInput">
-  <label for="latexStep">Select processing range (starts at Step 1):</label>
-  <select id="latexStep">
-    <option value="1">Step 1</option>
-    <option value="2">Step 2</option>
-    <option value="3">Step 3</option>
-    <option value="4" selected>Step 4</option>
-  </select>
-  <button onclick="handleLatexConversion()">Convert to LaTeX Label</button>
-  <div class="output" id="latexOutput" style="margin-bottom: 2rem; background: #f9f9f9; padding: 0.75rem; border: 1px solid #ddd;"></div>
-
-  <hr>
-<h3>Filename Conversion</h3>
-<label for="filenameInput">Enter text for filename:</label>
-  <input type="text" id="filenameInput">
-  <label for="filenameStep">Select processing range (starts at Step 1):</label>
-  <select id="filenameStep">
-    <option value="1">Step 1</option>
-    <option value="2">Step 2</option>
-    <option value="3" selected>Step 3</option>
-  </select>
-  <button onclick="handleFilenameConversion()">Convert to Filename</button>
-  <div class="output" id="filenameOutput" style="margin-bottom: 2rem; background: #f9f9f9; padding: 0.75rem; border: 1px solid #ddd;"></div>
-
-  <div class="step-info">
-    <h3>Explanation of Processing Steps</h3>
-    <p><strong>Step 1: Replace special characters</strong><br>
-    Converts known characters using a predefined mapping table. For example: <code>ä → ae</code>, <code>ñ → n</code>.
-    See full <a href="#char-map">mapping table</a> below.</p>
-
+    <h1>LaTeX Label & Filename Converter Tool</h1>
     
+    <div class="converter-selector">
+        <h2>What would you like to convert?</h2>
+        <div class="selector-buttons">
+            <button class="selector-button" onclick="selectConverter('latex')">LaTeX Labels</button>
+            <button class="selector-button" onclick="selectConverter('filename')">Filenames</button>
+        </div>
+    </div>
+    
+    <!-- LaTeX Converter Content -->
+    <div id="latex-content" class="converter-content">
+        <div class="info-box">
+            <h3>LaTeX Label Conversion Steps:</h3>
+            <ul>
+                <li><strong>Step 1:</strong> Replace special characters (ä→ae, ö→oe, etc.)<sup>1</sup></li>
+                <li><strong>Step 2:</strong> Remove diacritic marks (accents)</li>
+                <li><strong>Step 3:</strong> Replace non-alphanumeric characters with "_"</li>
+                <li><strong>Step 4:</strong> Convert to lowercase</li>
+                <li><strong>Step 5:</strong> Limit length to max. 60 characters</li>
+            </ul>
+        </div>
+        
+        <div class="converter-box">
+            <h2>LaTeX Label Converter</h2>
+            
+            <div class="input-group">
+                <label for="latex-input">Enter text:</label>
+                <textarea id="latex-input" placeholder="e.g. 15-minute interval of load profile data (kW) over the period 2021–2023"></textarea>
+            </div>
+            
+            <div class="step-selector">
+                <label>Convert up to which step:</label><br>
+                <label>
+                    <input type="radio" name="latex-steps" value="1"> Step 1 only
+                </label>
+                <label>
+                    <input type="radio" name="latex-steps" value="2"> Steps 1-2
+                </label>
+                <label>
+                    <input type="radio" name="latex-steps" value="3"> Steps 1-3
+                </label>
+                <label>
+                    <input type="radio" name="latex-steps" value="4"> Steps 1-4
+                </label>
+                <label>
+                    <input type="radio" name="latex-steps" value="5" checked> Steps 1-5 (Complete)
+                </label>
+            </div>
+            
+            <button onclick="convertLatex()">Convert</button>
+            
+            <div id="latex-output"></div>
+        </div>
+    </div>
+    
+    <!-- Filename Converter Content -->
+    <div id="filename-content" class="converter-content">
+        <div class="info-box">
+            <h3>Filename Conversion Steps:</h3>
+            <ul>
+                <li><strong>Step 1:</strong> Replace special characters (ä→ae, ö→oe, etc.)<sup>1</sup></li>
+                <li><strong>Step 2:</strong> Remove diacritic marks (accents)</li>
+                <li><strong>Step 3:</strong> Replace non-alphanumeric characters with "_"</li>
+                <li><strong>Step 4:</strong> Limit length to max. 40 characters</li>
+            </ul>
+        </div>
+        
+        <div class="converter-box">
+            <h2>Filename Converter</h2>
+            
+            <div class="input-group">
+                <label for="filename-input">Enter text:</label>
+                <textarea id="filename-input" placeholder="e.g. 15-minute interval of load profile data (kW) over the period 2021–2023"></textarea>
+            </div>
+            
+            <div class="step-selector">
+                <label>Convert up to which step:</label><br>
+                <label>
+                    <input type="radio" name="filename-steps" value="1"> Step 1 only
+                </label>
+                <label>
+                    <input type="radio" name="filename-steps" value="2"> Steps 1-2
+                </label>
+                <label>
+                    <input type="radio" name="filename-steps" value="3"> Steps 1-3
+                </label>
+                <label>
+                    <input type="radio" name="filename-steps" value="4" checked> Steps 1-4 (Complete)
+                </label>
+            </div>
+            
+            <button onclick="convertFilename()">Convert</button>
+            
+            <div id="filename-output"></div>
+        </div>
+    </div>
+    
+    <!-- Character Mapping Reference -->
+    <div class="reference-section" id="reference-section">
+        <h3>Character Mapping Reference<sup>1</sup></h3>
+        <p class="footnote"><sup>1</sup> Complete list of special character replacements used in Step 1:</p>
+        <div class="mapping-table" id="mapping-display"></div>
+    </div>
 
-    <p><strong>Step 2: Remove diacritics</strong><br>
-    Strips accents and marks (like <code>é</code> to <code>e</code>) using Unicode normalization, for characters not covered by step 1.</p>
-
-    <p><strong>Step 3: Replace all non-alphanumeric characters</strong><br>
-    Replaces all characters except letters, numbers, and underscores with an underscore (<code>_</code>), e.g. spaces and punctuation.</p>
-
-    <p><strong>Step 4: Convert to lowercase</strong><br>
-    Changes all characters to lowercase, which is useful for consistent LaTeX labeling.</p>
-  </div>
-<h3 id="char-map">Mapping Table (used in Step 1)</h3>
-<label for="mappingSearch">Search mapping:</label>
-<input type="text" id="mappingSearch" placeholder="Type a character or replacement..." onkeyup="filterMappingTable()">
-<table id="mappingTable">
-  <thead>
-    <tr><th>Original</th><th>Replaced with</th></tr>
-  </thead>
-  <tbody>
-    <!-- Filled dynamically by JavaScript -->
-  </tbody>
-</table>
-
-</div>
-<script>
-    const mapping = {
-      "ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss",
-      "é": "e", "è": "e", "ê": "e", "ë": "e", "ç": "c",
-      "ñ": "n", "á": "a", "í": "i", "ó": "o", "ú": "u",
-      "à": "a", "ì": "i", "ò": "o", "ù": "u",
-      "ã": "a", "õ": "o",
-      "ø": "oe", "å": "aa", "æ": "ae",
-      "đ": "d", "ð": "d", "þ": "th",
-      "ł": "l", "ń": "n", "ś": "s", "ź": "z", "ż": "z",
-      "č": "c", "ď": "d", "ě": "e", "ň": "n", "ř": "r",
-      "š": "s", "ť": "t", "ů": "u", "ž": "z",
-      "ő": "o", "ű": "u",
-      "ș": "s", "ț": "t",
-      "ı": "i", "ğ": "g", "ş": "s"
-    };
-
-    const regex = new RegExp(Object.keys(mapping).join("|"), "g");
-
-    function replaceSpecialChars(text) {
-      return text.replace(regex, match => mapping[match]);
-    }
-
-    function removeDiacritics(text) {
-      return text.normalize("NFKD").replace(/\p{M}/gu, "");
-    }
-
-    function cleanText(text, steps = 3) {
-      if (steps >= 1) text = replaceSpecialChars(text);
-      if (steps >= 2) text = removeDiacritics(text);
-      if (steps >= 3) text = text.replace(/[^a-zA-Z0-9_]/g, "_");
-      return text;
-    }
-
-    function convertToLatexLabel(text, steps) {
-      let cleaned = cleanText(text, Math.min(steps, 3));
-      if (steps >= 4) cleaned = cleaned.toLowerCase();
-      return cleaned;
-    }
-
-    function convertToFilename(text, steps) {
-      return cleanText(text, steps);
-    }
-
-    function handleLatexConversion() {
-      const input = document.getElementById("latexInput").value;
-      const steps = parseInt(document.getElementById("latexStep").value);
-      const output = convertToLatexLabel(input, steps);
-      document.getElementById("latexOutput").textContent = "Result: " + output;
-    }
-
-    function handleFilenameConversion() {
-      const input = document.getElementById("filenameInput").value;
-      const steps = parseInt(document.getElementById("filenameStep").value);
-      const output = convertToFilename(input, steps);
-      document.getElementById("filenameOutput").textContent = "Result: " + output;
-    }
-  function populateMappingTable() {
-  const tableBody = document.querySelector("#mappingTable tbody");
-  const sortedKeys = Object.keys(mapping).sort();
-  for (const key of sortedKeys) {
-    const row = document.createElement("tr");
-    const tdOriginal = document.createElement("td");
-    tdOriginal.textContent = key;
-    const tdReplacement = document.createElement("td");
-    tdReplacement.textContent = mapping[key];
-    row.appendChild(tdOriginal);
-    row.appendChild(tdReplacement);
-    tableBody.appendChild(row);
-  }
-}
-
-populateMappingTable();
-
-function filterMappingTable() {
-  const input = document.getElementById("mappingSearch");
-  const filter = input.value.toLowerCase();
-  const table = document.getElementById("mappingTable");
-  const rows = table.getElementsByTagName("tr");
-
-  for (let i = 1; i < rows.length; i++) { // Skip header row
-    const original = rows[i].cells[0].textContent.toLowerCase();
-    const replacement = rows[i].cells[1].textContent.toLowerCase();
-    if (original.includes(filter) || replacement.includes(filter)) {
-      rows[i].style.display = "";
-    } else {
-      rows[i].style.display = "none";
-    }
-  }
-}
-
-</script>
+    <script>
+        // Mapping for special characters → ASCII equivalents
+        const mapping = {
+            "ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss",
+            "é": "e", "è": "e", "ê": "e", "ë": "e",
+            "ç": "c", "ñ": "n", "á": "a", "í": "i",
+            "ó": "o", "ú": "u", "à": "a", "ì": "i",
+            "ò": "o", "ù": "u", "ã": "a", "õ": "o",
+            "ø": "oe", "å": "aa", "æ": "ae", "đ": "d",
+            "ð": "d", "þ": "th", "ł": "l", "ń": "n",
+            "ś": "s", "ź": "z", "ż": "z", "č": "c",
+            "ď": "d", "ě": "e", "ň": "n", "ř": "r",
+            "š": "s", "ť": "t", "ů": "u", "ž": "z",
+            "ő": "o", "ű": "u", "ș": "s", "ț": "t",
+            "ı": "i", "ğ": "g", "ş": "s"
+        };
+        
+        // Regular expression to match all special characters in the mapping
+        const regex = new RegExp(Object.keys(mapping).join("|"), "g");
+        
+        // Step 1: Replace special characters with ASCII equivalents
+        function replaceSpecialChars(text) {
+            return text.replace(regex, match => mapping[match]);
+        }
+        
+        // Step 2: Remove diacritic marks (accents, tildes, cedillas, etc.)
+        function removeDiacritics(text) {
+            return text.normalize("NFKD").replace(/\p{M}/gu, "");
+        }
+        
+        // Step 3: Replace non-alphanumeric characters with "_"
+        function replaceNonAlphanumeric(text) {
+            return text.replace(/[^a-zA-Z0-9*]/g, "_");
+        }
+        
+        // Process text with specified number of steps
+        function processText(text, steps, isLatex = false) {
+            const results = [];
+            let currentText = text;
+            
+            // Step 1
+            if (steps >= 1) {
+                currentText = replaceSpecialChars(currentText);
+                results.push({
+                    step: 1,
+                    description: "Special characters replaced",
+                    result: currentText
+                });
+            }
+            
+            // Step 2
+            if (steps >= 2) {
+                currentText = removeDiacritics(currentText);
+                results.push({
+                    step: 2,
+                    description: "Diacritic marks removed",
+                    result: currentText
+                });
+            }
+            
+            // Step 3
+            if (steps >= 3) {
+                currentText = replaceNonAlphanumeric(currentText);
+                results.push({
+                    step: 3,
+                    description: "Non-alphanumeric characters replaced",
+                    result: currentText
+                });
+            }
+            
+            // Step 4 - only for LaTeX
+            if (steps >= 4 && isLatex) {
+                currentText = currentText.toLowerCase();
+                results.push({
+                    step: 4,
+                    description: "Converted to lowercase",
+                    result: currentText
+                });
+            }
+            
+            // Step 5 - Length limitation (or Step 4 for filenames)
+            if ((steps >= 5 && isLatex) || (steps >= 4 && !isLatex)) {
+                const maxLength = isLatex ? 60 : 40;
+                const originalLength = currentText.length;
+                currentText = currentText.substring(0, maxLength);
+                const stepNumber = isLatex ? 5 : 4;
+                let description = `Length limited to ${maxLength} characters`;
+                if (originalLength > maxLength) {
+                    description += ` (truncated from ${originalLength} characters)`;
+                } else {
+                    description += ` (no truncation needed, ${originalLength} characters)`;
+                }
+                results.push({
+                    step: stepNumber,
+                    description: description,
+                    result: currentText
+                });
+            }
+            
+            return results;
+        }
+        
+        // Select converter type
+        function selectConverter(type) {
+            // Hide all content
+            document.querySelectorAll('.converter-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Remove active state from buttons
+            document.querySelectorAll('.selector-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected content
+            if (type === 'latex') {
+                document.getElementById('latex-content').classList.add('active');
+                event.target.classList.add('active');
+                // Set example text
+                document.getElementById('latex-input').value = '15-minute interval of load profile data (kW) over the period 2021–2023 with the mean value';
+            } else if (type === 'filename') {
+                document.getElementById('filename-content').classList.add('active');
+                event.target.classList.add('active');
+                // Set example text
+                document.getElementById('filename-input').value = '15-minute interval of load profile data (kW) over the period 2021–2023 with the mean value';
+            }
+            
+            // Show reference section when a converter is selected
+            document.getElementById('reference-section').classList.add('active');
+            
+            // Display mapping table if not already displayed
+            if (document.getElementById('mapping-display').innerHTML === '') {
+                displayMappingTable();
+            }
+        }
+        
+        // Convert LaTeX label
+        function convertLatex() {
+            const input = document.getElementById('latex-input').value;
+            const steps = parseInt(document.querySelector('input[name="latex-steps"]:checked').value);
+            const outputDiv = document.getElementById('latex-output');
+            
+            if (!input) {
+                outputDiv.innerHTML = '<div class="step-output"><p class="error-message">Please enter some text.</p></div>';
+                return;
+            }
+            
+            const results = processText(input, steps, true);
+            let html = '';
+            
+            results.forEach(result => {
+                html += `
+                    <div class="step-output">
+                        <h3>Step ${result.step}: ${result.description}</h3>
+                        <pre>${escapeHtml(result.result)}</pre>
+                    </div>
+                `;
+            });
+            
+            // Add final result for LaTeX
+            const finalResult = results[results.length - 1].result;
+            html += `
+                <div class="final-result">
+                    <strong>Final LaTeX Label:</strong>
+                    <button class="copy-button" onclick="copyToClipboard('${escapeHtml(finalResult)}', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                    <pre>${escapeHtml(finalResult)}</pre>
+                </div>
+            `;
+            
+            outputDiv.innerHTML = html;
+        }
+        
+        // Convert filename
+        function convertFilename() {
+            const input = document.getElementById('filename-input').value;
+            const steps = parseInt(document.querySelector('input[name="filename-steps"]:checked').value);
+            const outputDiv = document.getElementById('filename-output');
+            
+            if (!input) {
+                outputDiv.innerHTML = '<div class="step-output"><p class="error-message">Please enter some text.</p></div>';
+                return;
+            }
+            
+            const results = processText(input, steps, false);
+            let html = '';
+            
+            results.forEach(result => {
+                html += `
+                    <div class="step-output">
+                        <h3>Step ${result.step}: ${result.description}</h3>
+                        <pre>${escapeHtml(result.result)}</pre>
+                    </div>
+                `;
+            });
+            
+            // Add final result for filename
+            const finalResult = results[results.length - 1].result;
+            html += `
+                <div class="final-result">
+                    <strong>Final Filename:</strong>
+                    <button class="copy-button" onclick="copyToClipboard('${escapeHtml(finalResult)}', this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                    <pre>${escapeHtml(finalResult)}</pre>
+                </div>
+            `;
+            
+            outputDiv.innerHTML = html;
+        }
+        
+        // Escape HTML special characters
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+        
+        // Display character mapping table
+        function displayMappingTable() {
+            const mappingDisplay = document.getElementById('mapping-display');
+            let html = '';
+            
+            // Sort mappings alphabetically by the special character
+            const sortedMappings = Object.entries(mapping).sort((a, b) => a[0].localeCompare(b[0]));
+            
+            sortedMappings.forEach(([char, replacement]) => {
+                html += `<div class="mapping-item"><strong>${char}</strong> → ${replacement}</div>`;
+            });
+            
+            mappingDisplay.innerHTML = html;
+        }
+        
+        // Copy to clipboard function
+        function copyToClipboard(text, button) {
+            // Create a temporary textarea to copy the text
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            
+            // Select and copy the text
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Update button to show success
+            const originalHTML = button.innerHTML;
+            button.classList.add('copied');
+            button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Copied!</span>
+            `;
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                button.classList.remove('copied');
+                button.innerHTML = originalHTML;
+            }, 2000);
+        }
+        
+        // Initialize mapping table on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Mapping table will be displayed when a converter is selected
+        });
+    </script>
 </body>
 </html>

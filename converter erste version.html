@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Special Character Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    input, button, select {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      max-width: 400px;
+      font-size: 1rem;
+    }
+    .output {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .step-info {
+      background: #f0f0f0;
+      padding: 1rem;
+      margin-top: 1rem;
+      max-width: 800px;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.3rem 0.6rem;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h2>Special Character Converter</h2>
+<hr>
+<h3>LaTeX Label Conversion</h3>
+
+  <label for="latexInput">Enter text for LaTeX label:</label>
+  <input type="text" id="latexInput">
+  <label for="latexStep">Select processing range (starts at Step 1):</label>
+  <select id="latexStep">
+    <option value="1">Step 1</option>
+    <option value="2">Step 2</option>
+    <option value="3">Step 3</option>
+    <option value="4" selected>Step 4</option>
+  </select>
+  <button onclick="handleLatexConversion()">Convert to LaTeX Label</button>
+  <div class="output" id="latexOutput" style="margin-bottom: 2rem; background: #f9f9f9; padding: 0.75rem; border: 1px solid #ddd;"></div>
+
+  <hr>
+<h3>Filename Conversion</h3>
+<label for="filenameInput">Enter text for filename:</label>
+  <input type="text" id="filenameInput">
+  <label for="filenameStep">Select processing range (starts at Step 1):</label>
+  <select id="filenameStep">
+    <option value="1">Step 1</option>
+    <option value="2">Step 2</option>
+    <option value="3" selected>Step 3</option>
+  </select>
+  <button onclick="handleFilenameConversion()">Convert to Filename</button>
+  <div class="output" id="filenameOutput" style="margin-bottom: 2rem; background: #f9f9f9; padding: 0.75rem; border: 1px solid #ddd;"></div>
+
+  <div class="step-info">
+    <h3>Explanation of Processing Steps</h3>
+    <p><strong>Step 1: Replace special characters</strong><br>
+    Converts known characters using a predefined mapping table. For example: <code>ä → ae</code>, <code>ñ → n</code>.
+    See full <a href="#char-map">mapping table</a> below.</p>
+
+    
+
+    <p><strong>Step 2: Remove diacritics</strong><br>
+    Strips accents and marks (like <code>é</code> to <code>e</code>) using Unicode normalization, for characters not covered by step 1.</p>
+
+    <p><strong>Step 3: Replace all non-alphanumeric characters</strong><br>
+    Replaces all characters except letters, numbers, and underscores with an underscore (<code>_</code>), e.g. spaces and punctuation.</p>
+
+    <p><strong>Step 4: Convert to lowercase</strong><br>
+    Changes all characters to lowercase, which is useful for consistent LaTeX labeling.</p>
+  </div>
+<h3 id="char-map">Mapping Table (used in Step 1)</h3>
+<label for="mappingSearch">Search mapping:</label>
+<input type="text" id="mappingSearch" placeholder="Type a character or replacement..." onkeyup="filterMappingTable()">
+<table id="mappingTable">
+  <thead>
+    <tr><th>Original</th><th>Replaced with</th></tr>
+  </thead>
+  <tbody>
+    <!-- Filled dynamically by JavaScript -->
+  </tbody>
+</table>
+
+</div>
+<script>
+    const mapping = {
+      "ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss",
+      "é": "e", "è": "e", "ê": "e", "ë": "e", "ç": "c",
+      "ñ": "n", "á": "a", "í": "i", "ó": "o", "ú": "u",
+      "à": "a", "ì": "i", "ò": "o", "ù": "u",
+      "ã": "a", "õ": "o",
+      "ø": "oe", "å": "aa", "æ": "ae",
+      "đ": "d", "ð": "d", "þ": "th",
+      "ł": "l", "ń": "n", "ś": "s", "ź": "z", "ż": "z",
+      "č": "c", "ď": "d", "ě": "e", "ň": "n", "ř": "r",
+      "š": "s", "ť": "t", "ů": "u", "ž": "z",
+      "ő": "o", "ű": "u",
+      "ș": "s", "ț": "t",
+      "ı": "i", "ğ": "g", "ş": "s"
+    };
+
+    const regex = new RegExp(Object.keys(mapping).join("|"), "g");
+
+    function replaceSpecialChars(text) {
+      return text.replace(regex, match => mapping[match]);
+    }
+
+    function removeDiacritics(text) {
+      return text.normalize("NFKD").replace(/\p{M}/gu, "");
+    }
+
+    function cleanText(text, steps = 3) {
+      if (steps >= 1) text = replaceSpecialChars(text);
+      if (steps >= 2) text = removeDiacritics(text);
+      if (steps >= 3) text = text.replace(/[^a-zA-Z0-9_]/g, "_");
+      return text;
+    }
+
+    function convertToLatexLabel(text, steps) {
+      let cleaned = cleanText(text, Math.min(steps, 3));
+      if (steps >= 4) cleaned = cleaned.toLowerCase();
+      return cleaned;
+    }
+
+    function convertToFilename(text, steps) {
+      return cleanText(text, steps);
+    }
+
+    function handleLatexConversion() {
+      const input = document.getElementById("latexInput").value;
+      const steps = parseInt(document.getElementById("latexStep").value);
+      const output = convertToLatexLabel(input, steps);
+      document.getElementById("latexOutput").textContent = "Result: " + output;
+    }
+
+    function handleFilenameConversion() {
+      const input = document.getElementById("filenameInput").value;
+      const steps = parseInt(document.getElementById("filenameStep").value);
+      const output = convertToFilename(input, steps);
+      document.getElementById("filenameOutput").textContent = "Result: " + output;
+    }
+  function populateMappingTable() {
+  const tableBody = document.querySelector("#mappingTable tbody");
+  const sortedKeys = Object.keys(mapping).sort();
+  for (const key of sortedKeys) {
+    const row = document.createElement("tr");
+    const tdOriginal = document.createElement("td");
+    tdOriginal.textContent = key;
+    const tdReplacement = document.createElement("td");
+    tdReplacement.textContent = mapping[key];
+    row.appendChild(tdOriginal);
+    row.appendChild(tdReplacement);
+    tableBody.appendChild(row);
+  }
+}
+
+populateMappingTable();
+
+function filterMappingTable() {
+  const input = document.getElementById("mappingSearch");
+  const filter = input.value.toLowerCase();
+  const table = document.getElementById("mappingTable");
+  const rows = table.getElementsByTagName("tr");
+
+  for (let i = 1; i < rows.length; i++) { // Skip header row
+    const original = rows[i].cells[0].textContent.toLowerCase();
+    const replacement = rows[i].cells[1].textContent.toLowerCase();
+    if (original.includes(filter) || replacement.includes(filter)) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+}
+
+</script>
+</body>
+</html>
