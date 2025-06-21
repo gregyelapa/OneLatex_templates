@@ -361,7 +361,7 @@
                 <li><strong>Step 2:</strong> Remove diacritic marks (accents)</li>
                 <li><strong>Step 3:</strong> Replace non-alphanumeric characters with "_"</li>
                 <li><strong>Step 4:</strong> Convert to lowercase</li>
-                <li><strong>Step 5:</strong> Limit length to max. 60 characters</li>
+                <li><strong>Step 5:</strong> Limit length to max. 100 characters</li>
             </ul>
         </div>
         
@@ -529,7 +529,7 @@
             
             // Step 5 - Length limitation (or Step 4 for filenames)
             if ((steps >= 5 && isLatex) || (steps >= 4 && !isLatex)) {
-                const maxLength = isLatex ? 60 : 40;
+                const maxLength = isLatex ? 100 : 40;
                 const originalLength = currentText.length;
                 currentText = currentText.substring(0, maxLength);
                 const stepNumber = isLatex ? 5 : 4;
