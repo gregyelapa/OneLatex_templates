@@ -5,8 +5,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="styles.css">
     <title>OneLatex Package Generator for OneNote</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F4F4F4;
+            color: #1D1D1D;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #7719AA;
+        }
+        p {
+            font-size: 1.1em;
+            color: #4D4351;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #5FBAAF;
+            color: white;
+            font-weight: bold;
+        }
+        td {
+            border-bottom: 1px solid #E0E0E0;
+        }
+        a {
+            color: #7719AA;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        tr:nth-child(even) {
+            background-color: #F9F9F9;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Stil für die Buttons */
+        button {
+            background-color: #7719AA; /* Primärfarbe */
+            color: white;
+            font-size: 16px;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5FBAAF; /* Sekundärfarbe */
+        }
+
+        /* Link in Buttons */
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        button a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container für bessere Struktur */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Stil für den Code-Block */
+        .copy-content {
+            background-color: #ffe8ff; /* Leicht rosa Hintergrund aus deiner Palette */
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-family: "Courier New", monospace;
+            text-align: left;
+        }
+
+        /* Benachrichtigung für erfolgreiches/fehlgeschlagenes Kopieren */
+        .notification {
+            display: none;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Erfolgreiches Kopieren */
+        .success {
+            background-color: #5FBAAF; /* Sekundärfarbe */
+            color: white;
+        }
+
+        /* Fehlgeschlagenes Kopieren */
+        .error {
+            background-color: #AB791A; /* Goldbraune Farbe aus Palette */
+            color: white;
+        }
+
+        .info-box {
+            background-color: #F4F4F4; /* Helles Grau aus deiner Palette */
+            border-left: 5px solid #7719AA; /* Primärfarbe für visuelle Abgrenzung */
+            color: #333333;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: left;
+        }
+    </style>
     <script>
         let selectedLanguage = "english"; // Globale Variable für die Sprache
         let selectedCategory = "all"; // Globale Variable für die Filterung
@@ -15,13 +152,14 @@
             {
                 title: "Basic Setup",
                 category: "core-packages",
-                description: "Essential packages for document structure, encoding, font settings, and language options.",
+                description: "Essential packages for document structure, encoding, font settings, and language options. The geometry package sets A4 paper size with 3cm margins for optimal readability. UTF-8 encoding and T1 font encoding ensure proper character display and hyphenation. The babel package provides language-specific typography rules, while csquotes handles quotation marks correctly for each language. Graphics support is enabled through graphicx. The hyperref package creates clickable links with customized colors (blue for URLs, black for internal links). The varioref and cleveref packages work together to create intelligent cross-references that automatically format as 'Figure 1 on page 5' with proper language support (for detailed varioref/cleveref usage, see the <a href='https://www.notion.so/Cross-Referencing-26f970f1f6cc4888a34316bb62f68b76?source=copy_link#45e93c42080c4501ab20549ada4c6192' target='_blank'>Cross-Referencing section in the OneLatex Manual</a>).",
                 languages: {
                     "english": [
                         "\\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}",
                         "\\usepackage[utf8]{inputenc}",
                         "\\usepackage[T1]{fontenc}",
                         "\\usepackage[english]{babel}",
+                        "\\usepackage{csquotes}",
                         "\\usepackage{graphicx}",
                         "\\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, filecolor=black]{hyperref}",
                         "\\urlstyle{same}",
@@ -33,6 +171,7 @@
                         "\\usepackage[utf8]{inputenc}",
                         "\\usepackage[T1]{fontenc}",
                         "\\usepackage[ngerman]{babel}",
+                        "\\usepackage{csquotes}",
                         "\\usepackage{graphicx}",
                         "\\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue, filecolor=black]{hyperref}",
                         "\\urlstyle{same}",
@@ -45,7 +184,7 @@
             {
                 title: "General Appearance",
                 category: "appearance",
-                description: "To create a more modern appearance, the template includes four packages...",
+                description: "To create a more modern appearance, the template includes four packages that enhance document readability and visual appeal. The parskip package removes paragraph indentation and adds vertical space between paragraphs for cleaner text flow. The lmodern package provides scalable Latin Modern fonts that look crisp at any size. The setspace package with onehalfspacing option increases line spacing to 1.5 for improved readability. Finally, pifont adds access to special symbols and decorative elements like checkmarks and arrows that can enhance lists and highlights.",
                 commands: [
                     "\\usepackage{parskip}",
                     "\\usepackage{lmodern}",
@@ -56,7 +195,7 @@
             {
                 title: "Colors and Frames",
                 category: "appearance",
-                description: "To enhance the use of colors and framed content in the template, three key commands are included...",
+                description: "To enhance the use of colors and framed content in the template, three key commands are included. The xcolor package with table and xcdraw options provides extensive color support for text, backgrounds, and table cells, allowing you to use predefined colors or define custom RGB values. The framed package enables the creation of framed environments for highlighting important content like theorems, definitions, or warnings. The \\definecolor command creates a custom shade color (light blue: RGB 0.7, 0.85, 1) that can be used with the shaded environment to create visually appealing highlighted boxes. Together, these tools help create documents with professional color schemes and emphasized content blocks that improve readability and visual hierarchy.",
                 commands: [
                     "\\usepackage[table,xcdraw]{xcolor}",
                     "\\usepackage{framed}",
@@ -66,7 +205,7 @@
             {
                 title: "Pagination Control",
                 category: "appearance",
-                description: "The commands \\clubpenalty, \\widowpenalty, and \\displaywidowpenalty control pagination in LaTeX...",
+                description: "The commands \\clubpenalty, \\widowpenalty, and \\displaywidowpenalty control pagination in LaTeX to prevent poor page breaks. Setting these penalties to 10000 (maximum value) instructs LaTeX to avoid orphans (single lines at the bottom of a page) and widows (single lines at the top of a page) at all costs. The \\clubpenalty prevents a page break after the first line of a paragraph, \\widowpenalty prevents a page break before the last line of a paragraph, and \\displaywidowpenalty specifically handles displayed equations. These settings ensure that paragraphs and mathematical displays remain visually cohesive across page boundaries, significantly improving the professional appearance of your document by eliminating unsightly isolated lines.",
                 commands: [
                     "\\clubpenalty = 10000",
                     "\\widowpenalty = 10000",
@@ -76,66 +215,42 @@
             {
                 title: "Line Breaking Adjustments",
                 category: "appearance",
-                description: "\\setlength{\\emergencystretch}{2em} increases the flexibility of line breaking in LaTeX...",
+                description: "\\setlength{\\emergencystretch}{2em} increases the flexibility of line breaking in LaTeX by providing extra stretchable space between words when necessary. This command tells LaTeX that in emergency situations where text doesn't fit well on a line, it can add up to 2em of additional space between words to avoid overfull boxes (text extending into margins). This is particularly useful for documents with narrow columns, long URLs, or technical terms that are difficult to hyphenate. The 2em value strikes a balance between maintaining good typography and preventing unsightly margin overruns, making your document look more polished even with challenging text layouts.",
                 commands: [
                     "\\setlength{\\emergencystretch}{2em}"
                 ]
             },
             {
-                title: "array-Package",
+                title: "Table Packages",
                 category: "tables",
-                description: "array-package",
+                description: "These three essential packages provide comprehensive table creation and formatting capabilities in LaTeX. The array package extends the basic tabular environment with additional column types and improved spacing control, allowing for more flexible column definitions and better alignment options. The tabularx package automatically adjusts table width to fit the page margins and introduces the X column type that expands to fill available space, perfect for creating professional-looking tables with consistent widths. The longtable package enables tables to span multiple pages with automatic page breaks, repeated headers and footers, and proper captioning support. Together, these packages cover all table needs from simple formatted tables to complex multi-page data presentations with dynamic column widths.",
                 commands: [
-                    "\\usepackage{array}"
-                ]
-            },
-            {
-                title: "tabularx-Package",
-                category: "tables",
-                description: "array-package",
-                commands: [
-                    "\\usepackage{tabularx}"
-                ]
-            },
-            {
-                title: "longtable-Package",
-                category: "tables",
-                description: "array-package",
-                commands: [
+                    "\\usepackage{array}",
+                    "\\usepackage{tabularx}",
                     "\\usepackage{longtable}"
                 ]
             },
             {
-                title: "Integrate-PDF",
+                title: "PDF Integration",
                 category: "pdf",
-                description: "The pdfpages package in LaTeX is used to insert pages from external PDF files into your LaTeX document. It's especially useful if you want to include full pages (e.g. appendices, scanned documents, or certificates) without converting them to images or recreating them in LaTeX.",
+                description: "The pdfpages and pdflscape packages provide comprehensive PDF handling capabilities in LaTeX documents. The pdfpages package allows you to insert entire PDF documents or selected pages directly into your LaTeX document, which is particularly useful for including appendices, scanned documents, certificates, or any external PDF content without converting them to images. The pdflscape package enables landscape orientation for specific pages within your document, perfect for wide tables, figures, or diagrams that need more horizontal space. Together, these packages give you full control over PDF integration and page orientation, making it easy to combine different document sources and formats into a single, professional output.",
                 commands: [
                     "\\usepackage{pdfpages}",
-
-                ]
-            },
-            {
-                title: "Integrate-PDF",
-                category: "pdf",
-                description: "array-package",
-                commands: [
-                    "\\usepackage{pdflscape}",
-
+                    "\\usepackage{pdflscape}"
                 ]
             },
             {
                 title: "Bibliography",
                 category: "bibliography",
-                description: "bibliography",
+                description: "The biblatex package with biber backend and numeric-comp style provides a modern and flexible bibliography management system for LaTeX documents. Unlike the older BibTeX, biblatex with biber offers full Unicode support, customizable citation and bibliography styles, and advanced sorting options. The numeric-comp style creates compressed numeric citations (e.g., [1-3] instead of [1,2,3]) which save space and improve readability. The biber backend processes bibliographic data more intelligently, handling complex names, dates, and cross-references with ease. This setup is ideal for academic papers, theses, and technical documents requiring professional citation management with features like multiple bibliographies, filtering by type or keyword, and extensive customization options.",
                 commands: [
-                    "\\usepackage[backend=biber, style=numeric-comp]{biblatex}",
-
+                    "\\usepackage[backend=biber, style=numeric-comp]{biblatex}"
                 ]
             },
             {
                 title: "Section Numbering Depth",
                 category: "four-five-level",
-                description: "The command \setcounter{secnumdepth}{5} controls which section levels receive automatic numbering. By setting it to `5`, LaTeX includes numbering for \paragraph and \subparagraph, which are normally unnumbered. This extends the default numbering beyond \section, \subsection, and \subsubsection.",
+                description: "The command \\setcounter{secnumdepth}{5} controls which section levels receive automatic numbering in LaTeX. By setting it to 5, LaTeX includes numbering for \\paragraph and \\subparagraph levels, which are normally unnumbered. This extends the default numbering beyond \\section, \\subsection, and \\subsubsection to create a comprehensive hierarchical structure with up to five numbered levels. This is particularly useful for technical documentation, detailed reports, or legal documents where fine-grained section referencing is required. Combined with the paragraph redefinitions below, this creates a consistent numbering scheme throughout the entire document hierarchy, making it easier for readers to navigate complex documents and for authors to create precise cross-references.",
                 commands: [
                     "\\setcounter{secnumdepth}{5}"
                 ]
@@ -143,7 +258,7 @@
             {
                 title: "Redefining Paragraphs",
                 category: "four-five-level",
-                description: "By default, \paragraph and \subparagraph in LaTeX place the text directly after the title in the same line. The custom commands redefine them to behave more like \section, \subsection, and \subsubsection by ensuring the text starts on a new line. This is done by modifying \@startsection, setting a negative space before the heading and a small positive space after it. The bold font style (\\bfseries) makes the headings stand out. Setting the indentation to 0mm keeps them aligned with the left margin, like standard section titles. This creates a consistent heading structure across all levels.",
+                description: "The crefname commands customize how the cleveref package refers to paragraph and subparagraph levels in cross-references. By default, cleveref might use terms like 'paragraph' when referencing these levels, which can be confusing in documents where they function as regular sections. These commands redefine both singular and plural forms to use 'Section/Sections' (English) or 'Abschnitt/Abschnitte' (German), creating consistency across all hierarchical levels. This is especially important when combined with the paragraph redefinitions and increased secnumdepth, as it ensures that references like \\cref{par:example} produce natural-looking text such as 'Section 2.3.1' rather than 'paragraph 2.3.1'. The language-specific settings ensure proper references in multilingual documents.",
                 commands: [
                     "\\makeatletter",
                     "\\renewcommand\\paragraph{\\@startsection{paragraph}{3}{0mm}{-\\baselineskip}{.1\\baselineskip}{\\normalfont\\normalsize\\bfseries}}",
@@ -186,7 +301,7 @@
                             <div class="copy-content" id="CBstring${index}">
                                 ${selectedCommands.map(cmd => `<p style="margin:0;font-family:Calibri;font-size:11.0pt"><span style="background:#FFC000">${cmd}</span></p>`).join('')}
                             </div>
-                            <button onclick="copyToClipboard('CBstring${index}')">Copy to Clipboard</button>
+                            <button onclick="copyToClipboard('CBstring${index}')">Copy Packages in This Section to Clipboard</button>
                         `;
                     } else {
                         const commands = template.commands || [];
@@ -198,7 +313,7 @@
                             <div class="copy-content" id="CBstring${index}">
                                 ${commands.map(cmd => `<p style="margin:0;font-family:Calibri;font-size:11.0pt"><span style="background:#FFC000">${cmd}</span></p>`).join('')}
                             </div>
-                            <button onclick="copyToClipboard('CBstring${index}')">Copy to Clipboard</button>
+                            <button onclick="copyToClipboard('CBstring${index}')">Copy Packages in This Section to Clipboard</button>
                         `;
                     }
                     container.innerHTML += contentHTML;
@@ -228,9 +343,9 @@
                     new ClipboardItem({ 'text/html': new Blob([copiedContent], { type: 'text/html' }) })
                 ]);
 
-                showNotification("✅ All filtered commands copied successfully!", "success");
+                showNotification("✅ All filtered LaTeX packages copied successfully!", "success");
             } catch (err) {
-                showNotification("❌ Error copying all commands!", "error");
+                showNotification("❌ Error copying LaTeX packages!", "error");
             }
         }
 
@@ -265,13 +380,21 @@
         </button>
 
         <h1>OneLatex Package Generator for OneNote</h1>
-        <p>Click the button below to copy the template and paste it into OneNote.</p>
+        
+        <!-- Neue visuelle Einheit für die drei Elemente -->
+        <div style="background-color: #f8f9fa; border: 2px solid #7719AA; border-radius: 10px; padding: 25px; margin: 20px auto; max-width: 600px; box-shadow: 0 3px 10px rgba(119, 25, 170, 0.1);">
+            <p style="margin-top: 0;">Click the button below to copy the template and paste it into OneNote.</p>
 
-        <label for="global-lang-select">Select language:</label>
-        <select id="global-lang-select" onchange="updateLanguage()">
-            <option value="english" selected>English</option>
-            <option value="german">Deutsch</option>
-        </select>
+            <div class="d-flex flex-column align-items-center">
+                <button class="btn btn-secondary btn-lg" onclick="copyAllToClipboard()">Copy All Filtered LaTeX Packages to Clipboard</button>
+            </div>
+
+            <p style="margin-bottom: 0; margin-top: 20px; background-color: #f0f8ff; padding: 10px; border-left: 4px solid #6c2bd9; border-radius: 5px;">
+                💡 <strong>Quick Tip:</strong> For an easy start, click the <em>"Copy All Filtered LaTeX Packages to Clipboard"</em> button
+                above and paste the recommended LaTeX packages onto the first page of your OneNote notebook. These are best
+                practice settings to get you going quickly.
+            </p>
+        </div>
 
         <label for="filter-select">Filter:</label>
         <select id="filter-select" onchange="updateFilter()">
@@ -284,10 +407,12 @@
             <option value="four-five-level">paragraph and subparagraph</option>
         </select>
 
-        <!-- Nur noch der Copy-Button -->
-        <div class="d-flex flex-column align-items-center">
-            <button class="btn btn-secondary btn-lg" onclick="copyAllToClipboard()">Copy All Filtered Commands</button>
-        </div>
+        <label for="global-lang-select">Select language:</label>
+        <select id="global-lang-select" onchange="updateLanguage()">
+            <option value="english" selected>English</option>
+            <option value="german">Deutsch</option>
+        </select>
+
         <div id="notification" class="notification"></div>
         <div id="content-container"></div>
     </div>
