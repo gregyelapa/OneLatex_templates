@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>OneLatex Package Generator for OneNote</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237719AA'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -15,17 +14,6 @@
             margin: 0;
             padding: 20px;
             text-align: center;
-        }
-
-        @keyframes slideUp {
-            from {
-                top: 20px;
-                opacity: 1;
-            }
-            to {
-                top: -50px;
-                opacity: 0;
-            }
         }
         h1 {
             color: #7719AA;
@@ -126,29 +114,11 @@
         /* Benachrichtigung für erfolgreiches/fehlgeschlagenes Kopieren */
         .notification {
             display: none;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 30px;
-            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
             text-align: center;
             font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 10000;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                top: -50px;
-                opacity: 0;
-            }
-            to {
-                top: 20px;
-                opacity: 1;
-            }
         }
 
         /* Erfolgreiches Kopieren */
@@ -172,16 +142,6 @@
             border-radius: 5px;
             font-size: 16px;
             text-align: left;
-            line-height: 1.6;
-        }
-        
-        .info-box ul {
-            margin: 10px 0;
-            padding-left: 25px;
-        }
-        
-        .info-box li {
-            margin: 5px 0;
         }
     </style>
     <script>
@@ -192,7 +152,7 @@
             {
                 title: "Basic Setup",
                 category: "core-packages",
-                description: "Essential packages for professional LaTeX documents. These packages form the foundation of any well-structured document:<ul><li><strong>geometry</strong>: Sets A4 paper size with 3cm margins for optimal readability</li><li><strong>inputenc/fontenc</strong>: UTF-8 and T1 encoding ensure proper character display and hyphenation</li><li><strong>babel/csquotes</strong>: Provides language-specific typography rules and correct quotation marks</li><li><strong>graphicx</strong>: Enables inclusion of images in various formats</li><li><strong>hyperref</strong>: Creates clickable links with customized colors (blue for URLs, black for internal). The <strong>urlstyle{same}</strong> command ensures that links are displayed in the same style as the rest of the text instead of the default mono-spaced font</li><li><strong>varioref/cleveref</strong>: Intelligent cross-references that automatically include page numbers</li></ul>Together, these packages ensure your document has proper encoding, typography, and navigation features. For detailed varioref/cleveref usage, see the <a href='https://www.notion.so/Cross-Referencing-26f970f1f6cc4888a34316bb62f68b76?source=copy_link#45e93c42080c4501ab20549ada4c6192' target='_blank'>Cross-Referencing section in the OneLatex Manual</a>.",
+                description: "Essential packages for document structure, encoding, font settings, and language options. The geometry package sets A4 paper size with 3cm margins for optimal readability. UTF-8 encoding and T1 font encoding ensure proper character display and hyphenation. The babel package provides language-specific typography rules, while csquotes handles quotation marks correctly for each language. Graphics support is enabled through graphicx. The hyperref package creates clickable links with customized colors (blue for URLs, black for internal links). The varioref and cleveref packages work together to create intelligent cross-references that automatically format as 'Figure 1 on page 5' with proper language support (for detailed varioref/cleveref usage, see the <a href='https://www.notion.so/Cross-Referencing-26f970f1f6cc4888a34316bb62f68b76?source=copy_link#45e93c42080c4501ab20549ada4c6192' target='_blank'>Cross-Referencing section in the OneLatex Manual</a>).",
                 languages: {
                     "english": [
                         "\\usepackage[a4paper,hmargin=3cm,vmargin=3cm]{geometry}",
@@ -224,7 +184,7 @@
             {
                 title: "General Appearance",
                 category: "appearance",
-                description: "Packages for modern document appearance that enhance readability and visual appeal:<ul><li><strong>parskip</strong>: Removes paragraph indentation and adds vertical space between paragraphs for cleaner text flow</li><li><strong>lmodern</strong>: Provides scalable Latin Modern fonts that remain crisp at any size</li><li><strong>setspace</strong>: Sets 1.5 line spacing (onehalfspacing) for improved readability</li><li><strong>pifont</strong>: Adds special symbols like checkmarks, arrows, and decorative elements</li></ul>These packages work together to create clean, professional-looking documents with modern typography that's easier on the eyes.",
+                description: "To create a more modern appearance, the template includes four packages that enhance document readability and visual appeal. The parskip package removes paragraph indentation and adds vertical space between paragraphs for cleaner text flow. The lmodern package provides scalable Latin Modern fonts that look crisp at any size. The setspace package with onehalfspacing option increases line spacing to 1.5 for improved readability. Finally, pifont adds access to special symbols and decorative elements like checkmarks and arrows that can enhance lists and highlights.",
                 commands: [
                     "\\usepackage{parskip}",
                     "\\usepackage{lmodern}",
@@ -235,7 +195,7 @@
             {
                 title: "Colors and Frames",
                 category: "appearance",
-                description: "Tools for colors and visual emphasis in your documents:<ul><li><strong>xcolor</strong>: Extensive color support with table and xcdraw options for text, backgrounds, and table cells</li><li><strong>framed</strong>: Creates framed environments for highlighting important content</li><li><strong>definecolor</strong>: Defines a custom light blue shade (RGB 0.7, 0.85, 1) for the shaded environment</li></ul>Perfect for creating visually distinct sections like theorems, definitions, warnings, or any content that needs to stand out from the main text.",
+                description: "To enhance the use of colors and framed content in the template, three key commands are included. The xcolor package with table and xcdraw options provides extensive color support for text, backgrounds, and table cells, allowing you to use predefined colors or define custom RGB values. The framed package enables the creation of framed environments for highlighting important content like theorems, definitions, or warnings. The \\definecolor command creates a custom shade color (light blue: RGB 0.7, 0.85, 1) that can be used with the shaded environment to create visually appealing highlighted boxes. Together, these tools help create documents with professional color schemes and emphasized content blocks that improve readability and visual hierarchy.",
                 commands: [
                     "\\usepackage[table,xcdraw]{xcolor}",
                     "\\usepackage{framed}",
@@ -245,7 +205,7 @@
             {
                 title: "Pagination Control",
                 category: "appearance",
-                description: "Prevents poor page breaks by setting maximum penalties (10000) for widow and orphan control:<ul><li><strong>clubpenalty</strong>: Prevents page break after the first line of a paragraph</li><li><strong>widowpenalty</strong>: Prevents page break before the last line of a paragraph</li><li><strong>displaywidowpenalty</strong>: Protects displayed equations from being split</li></ul>These settings ensure that paragraphs and mathematical displays remain visually cohesive across page boundaries, eliminating unsightly isolated lines.",
+                description: "The commands \\clubpenalty, \\widowpenalty, and \\displaywidowpenalty control pagination in LaTeX to prevent poor page breaks. Setting these penalties to 10000 (maximum value) instructs LaTeX to avoid orphans (single lines at the bottom of a page) and widows (single lines at the top of a page) at all costs. The \\clubpenalty prevents a page break after the first line of a paragraph, \\widowpenalty prevents a page break before the last line of a paragraph, and \\displaywidowpenalty specifically handles displayed equations. These settings ensure that paragraphs and mathematical displays remain visually cohesive across page boundaries, significantly improving the professional appearance of your document by eliminating unsightly isolated lines.",
                 commands: [
                     "\\clubpenalty = 10000",
                     "\\widowpenalty = 10000",
@@ -255,7 +215,7 @@
             {
                 title: "Line Breaking Adjustments",
                 category: "appearance",
-                description: "Adds 2em of emergency stretch space between words when LaTeX struggles with line breaking. This prevents text from extending into margins (overfull boxes), particularly useful for documents with narrow columns, long URLs, or technical terms that resist hyphenation. The 2em value provides a good balance between typography and practicality.",
+                description: "\\setlength{\\emergencystretch}{2em} increases the flexibility of line breaking in LaTeX by providing extra stretchable space between words when necessary. This command tells LaTeX that in emergency situations where text doesn't fit well on a line, it can add up to 2em of additional space between words to avoid overfull boxes (text extending into margins). This is particularly useful for documents with narrow columns, long URLs, or technical terms that are difficult to hyphenate. The 2em value strikes a balance between maintaining good typography and preventing unsightly margin overruns, making your document look more polished even with challenging text layouts.",
                 commands: [
                     "\\setlength{\\emergencystretch}{2em}"
                 ]
@@ -263,7 +223,7 @@
             {
                 title: "Table Packages",
                 category: "tables",
-                description: "Essential packages for professional table creation and formatting:<ul><li><strong>array</strong>: Extends basic tables with enhanced column types and improved spacing control</li><li><strong>tabularx</strong>: Creates tables that automatically fit page width with flexible X columns</li><li><strong>longtable</strong>: Enables multi-page tables with automatic breaks and repeating headers</li></ul>Together, these packages handle everything from simple formatted tables to complex multi-page data presentations with dynamic widths.",
+                description: "These three essential packages provide comprehensive table creation and formatting capabilities in LaTeX. The array package extends the basic tabular environment with additional column types and improved spacing control, allowing for more flexible column definitions and better alignment options. The tabularx package automatically adjusts table width to fit the page margins and introduces the X column type that expands to fill available space, perfect for creating professional-looking tables with consistent widths. The longtable package enables tables to span multiple pages with automatic page breaks, repeated headers and footers, and proper captioning support. Together, these packages cover all table needs from simple formatted tables to complex multi-page data presentations with dynamic column widths.",
                 commands: [
                     "\\usepackage{array}",
                     "\\usepackage{tabularx}",
@@ -273,7 +233,7 @@
             {
                 title: "PDF Integration",
                 category: "pdf",
-                description: "Comprehensive PDF handling capabilities for LaTeX documents:<ul><li><strong>pdfpages</strong>: Insert entire PDF documents or selected pages directly into your document</li><li><strong>pdflscape</strong>: Switch to landscape orientation for specific pages within your document</li></ul>Ideal for including appendices, certificates, scanned documents, or wide tables/figures that need extra horizontal space.",
+                description: "The pdfpages and pdflscape packages provide comprehensive PDF handling capabilities in LaTeX documents. The pdfpages package allows you to insert entire PDF documents or selected pages directly into your LaTeX document, which is particularly useful for including appendices, scanned documents, certificates, or any external PDF content without converting them to images. The pdflscape package enables landscape orientation for specific pages within your document, perfect for wide tables, figures, or diagrams that need more horizontal space. Together, these packages give you full control over PDF integration and page orientation, making it easy to combine different document sources and formats into a single, professional output.",
                 commands: [
                     "\\usepackage{pdfpages}",
                     "\\usepackage{pdflscape}"
@@ -282,7 +242,7 @@
             {
                 title: "Bibliography",
                 category: "bibliography",
-                description: "Modern bibliography management using biblatex with biber backend. The numeric-comp style creates compressed citations ([1-3] instead of [1,2,3]) for cleaner references. Offers full Unicode support, customizable styles, and intelligent data processing. Perfect for academic papers, theses, and technical documents requiring professional citation management.",
+                description: "The biblatex package with biber backend and numeric-comp style provides a modern and flexible bibliography management system for LaTeX documents. Unlike the older BibTeX, biblatex with biber offers full Unicode support, customizable citation and bibliography styles, and advanced sorting options. The numeric-comp style creates compressed numeric citations (e.g., [1-3] instead of [1,2,3]) which save space and improve readability. The biber backend processes bibliographic data more intelligently, handling complex names, dates, and cross-references with ease. This setup is ideal for academic papers, theses, and technical documents requiring professional citation management with features like multiple bibliographies, filtering by type or keyword, and extensive customization options.",
                 commands: [
                     "\\usepackage[backend=biber, style=numeric-comp]{biblatex}"
                 ]
@@ -290,7 +250,7 @@
             {
                 title: "Section Numbering Depth",
                 category: "four-five-level",
-                description: "Extends automatic numbering to paragraph and subparagraph levels, which are normally unnumbered. Creates up to 5 numbered hierarchy levels (section through subparagraph), essential for technical documentation, detailed reports, or legal documents where fine-grained section referencing is required. Works seamlessly with the paragraph redefinitions below.",
+                description: "The command \\setcounter{secnumdepth}{5} controls which section levels receive automatic numbering in LaTeX. By setting it to 5, LaTeX includes numbering for \\paragraph and \\subparagraph levels, which are normally unnumbered. This extends the default numbering beyond \\section, \\subsection, and \\subsubsection to create a comprehensive hierarchical structure with up to five numbered levels. This is particularly useful for technical documentation, detailed reports, or legal documents where fine-grained section referencing is required. Combined with the paragraph redefinitions below, this creates a consistent numbering scheme throughout the entire document hierarchy, making it easier for readers to navigate complex documents and for authors to create precise cross-references.",
                 commands: [
                     "\\setcounter{secnumdepth}{5}"
                 ]
@@ -298,7 +258,7 @@
             {
                 title: "Redefining Paragraphs",
                 category: "four-five-level",
-                description: "Customizes cleveref package to use consistent terminology across all section levels. Changes references to paragraphs/subparagraphs from 'paragraph' to 'Section' (English) or 'Abschnitt' (German). This ensures that \\cref commands produce natural-looking text like 'Section 2.3.1' instead of 'paragraph 2.3.1', maintaining consistency throughout your document.",
+                description: "The crefname commands customize how the cleveref package refers to paragraph and subparagraph levels in cross-references. By default, cleveref might use terms like 'paragraph' when referencing these levels, which can be confusing in documents where they function as regular sections. These commands redefine both singular and plural forms to use 'Section/Sections' (English) or 'Abschnitt/Abschnitte' (German), creating consistency across all hierarchical levels. This is especially important when combined with the paragraph redefinitions and increased secnumdepth, as it ensures that references like \\cref{par:example} produce natural-looking text such as 'Section 2.3.1' rather than 'paragraph 2.3.1'. The language-specific settings ensure proper references in multilingual documents.",
                 commands: [
                     "\\makeatletter",
                     "\\renewcommand\\paragraph{\\@startsection{paragraph}{3}{0mm}{-\\baselineskip}{.1\\baselineskip}{\\normalfont\\normalsize\\bfseries}}",
@@ -309,7 +269,7 @@
             {
                 title: "Crefname Adjustments",
                 category: "four-five-level",
-                description: "Redefines paragraph and subparagraph formatting for consistency with other section levels:<ul><li>Text starts on a new line instead of continuing inline</li><li>Bold headings (\\bfseries) for clear visual hierarchy</li><li>Left-aligned with no indentation, matching standard sections</li><li>Proper spacing before and after headings</li></ul>Creates a uniform heading structure throughout your document, making all hierarchy levels behave consistently.",
+                description: "By default, \paragraph and \subparagraph in LaTeX place the text directly after the title in the same line. The custom commands redefine them to behave more like \section, \subsection, and \subsubsection by ensuring the text starts on a new line. This is done by modifying \@startsection, setting a negative space before the heading and a small positive space after it. The bold font style (\\bfseries) makes the headings stand out. Setting the indentation to 0mm keeps them aligned with the left margin, like standard section titles. This creates a consistent heading structure across all levels.",
                 languages: {
                     "english": [
                         "\\crefname{paragraph}{Section}{Sections}",
@@ -404,21 +364,14 @@
             notification.textContent = message;
             notification.className = type;
             notification.style.display = "block";
-            
-            // Animation beim Ausblenden
             setTimeout(() => {
-                notification.style.animation = "slideUp 0.3s ease-in";
-                setTimeout(() => {
-                    notification.style.display = "none";
-                    notification.style.animation = "slideDown 0.3s ease-out";
-                }, 300);
-            }, 2700);
+                notification.style.display = "none";
+            }, 3000);
         }
     </script>
 </head>
 
 <body onload="generateContent()">
-    <div id="notification" class="notification"></div>
     <div class="container" style="position: relative;">
         <!-- Close Button innerhalb des Containers rechts oben -->
         <button id="returnButton" class="btn btn-primary" onclick="closeOrRedirect()"
@@ -436,7 +389,7 @@
                 <button class="btn btn-secondary btn-lg" onclick="copyAllToClipboard()">Copy All Filtered LaTeX Packages to Clipboard</button>
             </div>
 
-            <p style="margin-bottom: 0; margin-top: 20px; background-color: #F4F4F4; padding: 15px; border-left: 5px solid #7719AA; border-radius: 5px; font-size: 16px;">
+            <p style="margin-bottom: 0; margin-top: 20px; background-color: #f0f8ff; padding: 10px; border-left: 4px solid #6c2bd9; border-radius: 5px;">
                 💡 <strong>Quick Tip:</strong> For an easy start, click the <em>"Copy All Filtered LaTeX Packages to Clipboard"</em> button
                 above and paste the recommended LaTeX packages onto the first page of your OneNote notebook. These are best
                 practice settings to get you going quickly.
@@ -489,4 +442,4 @@
     </script>
 </body>
 
-</html>    
+</html>
