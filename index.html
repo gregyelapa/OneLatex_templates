@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>OneLatex Package Generator for OneNote</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237719AA'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237719AA'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -15,228 +16,251 @@
             margin: 0;
             padding: 20px;
             text-align: center;
-        /* Inline Benachrichtigung neben Buttons */
-        .inline-notification {
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            z-index: 10000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            white-space: nowrap;
-        }
-        
-        // Compatibility function for old calls
-        function showNotification(message, type) {
-            console.log("showNotification called (legacy):", message, type);
-            // For now, just use alert
-            alert(message);
-        }
-        
-        .info-box {
-            background-color: #F4F4F4; /* Helles Grau aus deiner Palette */
-            border-left: 5px solid #7719AA; /* Primärfarbe für visuelle Abgrenzung */
-            color: #333333;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: left;
-            line-height: 1.6;
-        }
-        
-        .info-box ul {
-            margin: 10px 0;
-            padding-left: 25px;
-        }
-        
-        .info-box li {
-            margin: 5px 0;
-        }
-        
-        .inline-notification.success {
-            background-color: #5FBAAF;
-            color: white;
-        }
-        
-        .inline-notification.error {
-            background-color: #AB791A;
-            color: white;
-        }
 
-        @keyframes slideUp {
-            from {
-                top: 20px;
-                opacity: 1;
-            }
-            to {
-                top: -50px;
+            /* Inline Benachrichtigung neben Buttons */
+            .inline-notification {
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: bold;
+                font-size: 14px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
                 opacity: 0;
+                transition: opacity 0.3s ease;
+                white-space: nowrap;
             }
-        }
-        h1 {
-            color: #7719AA;
-        }
-        p {
-            font-size: 1.1em;
-            color: #4D4351;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-        }
-        th {
-            background-color: #5FBAAF;
-            color: white;
-            font-weight: bold;
-        }
-        td {
-            border-bottom: 1px solid #E0E0E0;
-        }
-        a {
-            color: #7719AA;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        tr:nth-child(even) {
-            background-color: #F9F9F9;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-        }
 
-        /* Stil für die Buttons */
-        button {
-            background-color: #7719AA; /* Primärfarbe */
-            color: white;
-            font-size: 16px;
-            border: none;
-            padding: 10px 15px;
-            margin: 10px 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #5FBAAF; /* Sekundärfarbe */
-        }
-
-        /* Smooth transition for button changes */
-        button {
-            transition: all 0.3s ease;
-        }
-
-        /* Link in Buttons */
-        button a {
-            color: white;
-            text-decoration: none;
-        }
-
-        button a:hover {
-            text-decoration: underline;
-        }
-
-        /* Container für bessere Struktur */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        /* Stil für den Code-Block */
-        .copy-content {
-            background-color: #ffe8ff; /* Leicht rosa Hintergrund aus deiner Palette */
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            font-family: "Courier New", monospace;
-            text-align: left;
-        }
-
-        /* Benachrichtigung für erfolgreiches/fehlgeschlagenes Kopieren */
-        .notification {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 10000;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                top: -50px;
-                opacity: 0;
+            // Compatibility function for old calls
+            function showNotification(message, type) {
+                console.log("showNotification called (legacy):", message, type);
+                // For now, just use alert
+                alert(message);
             }
-            to {
+
+            .info-box {
+                background-color: #F4F4F4;
+                /* Helles Grau aus deiner Palette */
+                border-left: 5px solid #7719AA;
+                /* Primärfarbe für visuelle Abgrenzung */
+                color: #333333;
+                padding: 15px;
+                margin-top: 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                text-align: left;
+                line-height: 1.6;
+            }
+
+            .info-box ul {
+                margin: 10px 0;
+                padding-left: 25px;
+            }
+
+            .info-box li {
+                margin: 5px 0;
+            }
+
+            .inline-notification.success {
+                background-color: #5FBAAF;
+                color: white;
+            }
+
+            .inline-notification.error {
+                background-color: #AB791A;
+                color: white;
+            }
+
+            @keyframes slideUp {
+                from {
+                    top: 20px;
+                    opacity: 1;
+                }
+
+                to {
+                    top: -50px;
+                    opacity: 0;
+                }
+            }
+
+            h1 {
+                color: #7719AA;
+            }
+
+            p {
+                font-size: 1.1em;
+                color: #4D4351;
+            }
+
+            table {
+                width: 80%;
+                margin: 20px auto;
+                border-collapse: collapse;
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            th,
+            td {
+                padding: 15px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #5FBAAF;
+                color: white;
+                font-weight: bold;
+            }
+
+            td {
+                border-bottom: 1px solid #E0E0E0;
+            }
+
+            a {
+                color: #7719AA;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            tr:nth-child(even) {
+                background-color: #F9F9F9;
+            }
+
+            .container {
+                max-width: 900px;
+                margin: auto;
+                padding: 20px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Stil für die Buttons */
+            button {
+                background-color: #7719AA;
+                /* Primärfarbe */
+                color: white;
+                font-size: 16px;
+                border: none;
+                padding: 10px 15px;
+                margin: 10px 5px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #5FBAAF;
+                /* Sekundärfarbe */
+            }
+
+            /* Smooth transition for button changes */
+            button {
+                transition: all 0.3s ease;
+            }
+
+            /* Link in Buttons */
+            button a {
+                color: white;
+                text-decoration: none;
+            }
+
+            button a:hover {
+                text-decoration: underline;
+            }
+
+            /* Container für bessere Struktur */
+            .container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+                background-color: white;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            /* Stil für den Code-Block */
+            .copy-content {
+                background-color: #ffe8ff;
+                /* Leicht rosa Hintergrund aus deiner Palette */
+                padding: 20px;
+                margin-top: 20px;
+                border-radius: 5px;
+                font-family: "Courier New", monospace;
+                text-align: left;
+            }
+
+            /* Benachrichtigung für erfolgreiches/fehlgeschlagenes Kopieren */
+            .notification {
+                display: none;
+                position: fixed;
                 top: 20px;
-                opacity: 1;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 30px;
+                border-radius: 8px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 16px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                animation: slideDown 0.3s ease-out;
             }
-        }
 
-        /* Erfolgreiches Kopieren */
-        .success {
-            background-color: #5FBAAF; /* Sekundärfarbe */
-            color: white;
-        }
+            @keyframes slideDown {
+                from {
+                    top: -50px;
+                    opacity: 0;
+                }
 
-        /* Fehlgeschlagenes Kopieren */
-        .error {
-            background-color: #AB791A; /* Goldbraune Farbe aus Palette */
-            color: white;
-        }
+                to {
+                    top: 20px;
+                    opacity: 1;
+                }
+            }
 
-        .info-box {
-            background-color: #F4F4F4; /* Helles Grau aus deiner Palette */
-            border-left: 5px solid #7719AA; /* Primärfarbe für visuelle Abgrenzung */
-            color: #333333;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: left;
-            line-height: 1.6;
-        }
-        
-        .info-box ul {
-            margin: 10px 0;
-            padding-left: 25px;
-        }
-        
-        .info-box li {
-            margin: 5px 0;
-        }
+            /* Erfolgreiches Kopieren */
+            .success {
+                background-color: #5FBAAF;
+                /* Sekundärfarbe */
+                color: white;
+            }
+
+            /* Fehlgeschlagenes Kopieren */
+            .error {
+                background-color: #AB791A;
+                /* Goldbraune Farbe aus Palette */
+                color: white;
+            }
+
+            .info-box {
+                background-color: #F4F4F4;
+                /* Helles Grau aus deiner Palette */
+                border-left: 5px solid #7719AA;
+                /* Primärfarbe für visuelle Abgrenzung */
+                color: #333333;
+                padding: 15px;
+                margin-top: 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                text-align: left;
+                line-height: 1.6;
+            }
+
+            .info-box ul {
+                margin: 10px 0;
+                padding-left: 25px;
+            }
+
+            .info-box li {
+                margin: 5px 0;
+            }
     </style>
     <script>
         // Global compatibility function - muss als erstes definiert werden
@@ -259,7 +283,7 @@
                 color: white;
             `;
             notification.textContent = message;
-            
+
             // CSS Animation hinzufügen
             const style = document.createElement('style');
             style.textContent = `
@@ -273,9 +297,9 @@
                 }
             `;
             document.head.appendChild(style);
-            
+
             document.body.appendChild(notification);
-            
+
             // Entfernen nach 3 Sekunden
             setTimeout(() => {
                 notification.style.animation = 'slideUp 0.3s ease-in';
@@ -284,7 +308,7 @@
                 }, 300);
             }, 3000);
         }
-        
+
         let selectedLanguage = "english"; // Globale Variable für die Sprache
         let selectedCategory = "all"; // Globale Variable für die Filterung
 
@@ -345,24 +369,50 @@
                 }
             },
             {
-                title: "General Appearance",
-                category: "appearance",
-                description: "Packages for modern document appearance that enhance readability and visual appeal:<ul><li><strong>parskip</strong>: Removes paragraph indentation and adds vertical space between paragraphs for cleaner text flow</li><li><strong>lmodern</strong>: Provides scalable Latin Modern fonts that remain crisp at any size</li><li><strong>setspace</strong>: Sets 1.5 line spacing (onehalfspacing) for improved readability</li><li><strong>pifont</strong>: Adds special symbols like checkmarks, arrows, and decorative elements</li></ul>These packages work together to create clean, professional-looking documents with modern typography that's easier on the eyes.",
+                title: "Table Packages",
+                category: "recommended",
+                description: "Essential packages for professional table creation and formatting:<ul><li><strong>array</strong>: Extends basic tables with enhanced column types and improved spacing control</li><li><strong>tabularx</strong>: Creates tables that automatically fit page width with flexible X columns</li><li><strong>longtable</strong>: Enables multi-page tables with automatic breaks and repeating headers</li></ul>Together, these packages handle everything from simple formatted tables to complex multi-page data presentations with dynamic widths.",
                 commands: [
-                    "\\usepackage{parskip}",
-                    "\\usepackage{lmodern}",
-                    "\\usepackage[onehalfspacing]{setspace}",
-                    "\\usepackage{pifont}"
+                    "\\usepackage{array}",
+                    "\\usepackage{tabularx}",
+                    "\\usepackage{longtable}"
                 ]
             },
             {
                 title: "Colors and Frames",
-                category: "appearance",
+                category: "recommended",
                 description: "Tools for colors and visual emphasis in your documents:<ul><li><strong>xcolor</strong>: Extensive color support with table and xcdraw options for text, backgrounds, and table cells</li><li><strong>framed</strong>: Creates framed environments for highlighting important content</li><li><strong>definecolor</strong>: Defines a custom light blue shade (RGB 0.7, 0.85, 1) for the shaded environment</li></ul>Perfect for creating visually distinct sections like theorems, definitions, warnings, or any content that needs to stand out from the main text.",
                 commands: [
                     "\\usepackage[table,xcdraw]{xcolor}",
                     "\\usepackage{framed}",
                     "\\definecolor{shadecolor}{rgb}{0.7,0.85,1}"
+                ]
+            },
+            {
+                title: "PDF Integration",
+                category: "recommended",
+                description: "Comprehensive PDF handling capabilities for LaTeX documents:<ul><li><strong>pdfpages</strong>: Insert entire PDF documents or selected pages directly into your document</li><li><strong>pdflscape</strong>: Switch to landscape orientation for specific pages within your document</li></ul>Ideal for including appendices, certificates, scanned documents, or wide tables/figures that need extra horizontal space.",
+                commands: [
+                    "\\usepackage{pdfpages}",
+                    "\\usepackage{pdflscape}"
+                ]
+            },
+            {
+                title: "Bibliography",
+                category: "recommended",
+                description: "Modern bibliography management using biblatex with biber backend. The numeric-comp style creates compressed citations ([1-3] instead of [1,2,3]) for cleaner references. Offers full Unicode support, customizable styles, and intelligent data processing. Perfect for academic papers, theses, and technical documents requiring professional citation management.",
+                commands: [
+                    "\\usepackage[backend=biber, style=numeric-comp]{biblatex}"
+                ]
+            },
+            {
+                title: "General Appearance",
+                category: "appearance",
+                description: "Packages for modern document appearance that enhance readability and visual appeal:<ul><li><strong>parskip</strong>: Removes paragraph indentation and adds vertical space between paragraphs for cleaner text flow</li><li><strong>lmodern</strong>: Provides scalable Latin Modern fonts that remain crisp at any size</li><li><strong>setspace</strong>: Sets 1.5 line spacing (onehalfspacing) for improved readability</li></ul>These packages work together to create clean, professional-looking documents with modern typography that's easier on the eyes.",
+                commands: [
+                    "\\usepackage{parskip}",
+                    "\\usepackage{lmodern}",
+                    "\\usepackage[onehalfspacing]{setspace}"
                 ]
             },
             {
@@ -384,33 +434,6 @@
                 ]
             },
             {
-                title: "Table Packages",
-                category: "tables",
-                description: "Essential packages for professional table creation and formatting:<ul><li><strong>array</strong>: Extends basic tables with enhanced column types and improved spacing control</li><li><strong>tabularx</strong>: Creates tables that automatically fit page width with flexible X columns</li><li><strong>longtable</strong>: Enables multi-page tables with automatic breaks and repeating headers</li></ul>Together, these packages handle everything from simple formatted tables to complex multi-page data presentations with dynamic widths.",
-                commands: [
-                    "\\usepackage{array}",
-                    "\\usepackage{tabularx}",
-                    "\\usepackage{longtable}"
-                ]
-            },
-            {
-                title: "PDF Integration",
-                category: "pdf",
-                description: "Comprehensive PDF handling capabilities for LaTeX documents:<ul><li><strong>pdfpages</strong>: Insert entire PDF documents or selected pages directly into your document</li><li><strong>pdflscape</strong>: Switch to landscape orientation for specific pages within your document</li></ul>Ideal for including appendices, certificates, scanned documents, or wide tables/figures that need extra horizontal space.",
-                commands: [
-                    "\\usepackage{pdfpages}",
-                    "\\usepackage{pdflscape}"
-                ]
-            },
-            {
-                title: "Bibliography",
-                category: "bibliography",
-                description: "Modern bibliography management using biblatex with biber backend. The numeric-comp style creates compressed citations ([1-3] instead of [1,2,3]) for cleaner references. Offers full Unicode support, customizable styles, and intelligent data processing. Perfect for academic papers, theses, and technical documents requiring professional citation management.",
-                commands: [
-                    "\\usepackage[backend=biber, style=numeric-comp]{biblatex}"
-                ]
-            },
-            {
                 title: "Section Numbering Depth",
                 category: "four-five-level",
                 description: "Extends automatic numbering to paragraph and subparagraph levels, which are normally unnumbered. Creates up to 5 numbered hierarchy levels (section through subparagraph), essential for technical documentation, detailed reports, or legal documents where fine-grained section referencing is required. Works seamlessly with the paragraph redefinitions below.",
@@ -421,7 +444,7 @@
             {
                 title: "Redefining Paragraphs",
                 category: "four-five-level",
-                description: "Customizes cleveref package to use consistent terminology across all section levels. Changes references to paragraphs/subparagraphs from 'paragraph' to 'Section' (English) or 'Abschnitt' (German). This ensures that \\cref commands produce natural-looking text like 'Section 2.3.1' instead of 'paragraph 2.3.1', maintaining consistency throughout your document.",
+                description: "Redefines paragraph and subparagraph formatting for consistency with other section levels:<ul><li>Text starts on a new line instead of continuing inline</li><li>Bold headings (\\bfseries) for clear visual hierarchy</li><li>Left-aligned with no indentation, matching standard sections</li><li>Proper spacing before and after headings</li></ul>Creates a uniform heading structure throughout your document, making all hierarchy levels behave consistently.",
                 commands: [
                     "\\makeatletter",
                     "\\renewcommand\\paragraph{\\@startsection{paragraph}{3}{0mm}{-\\baselineskip}{.1\\baselineskip}{\\normalfont\\normalsize\\bfseries}}",
@@ -432,7 +455,7 @@
             {
                 title: "Crefname Adjustments",
                 category: "four-five-level",
-                description: "Redefines paragraph and subparagraph formatting for consistency with other section levels:<ul><li>Text starts on a new line instead of continuing inline</li><li>Bold headings (\\bfseries) for clear visual hierarchy</li><li>Left-aligned with no indentation, matching standard sections</li><li>Proper spacing before and after headings</li></ul>Creates a uniform heading structure throughout your document, making all hierarchy levels behave consistently.",
+                description: "Customizes cleveref package to use consistent terminology across all section levels. Changes references to paragraphs/subparagraphs from 'paragraph' to 'Section' (English) or 'Abschnitt' (German). This ensures that \\cref commands produce natural-looking text like 'Section 2.3.1' instead of 'paragraph 2.3.1', maintaining consistency throughout your document.",
                 languages: {
                     "english": [
                         "\\crefname{paragraph}{Section}{Sections}",
@@ -533,18 +556,23 @@
         </button>
 
         <h1>OneLatex Package Generator for OneNote</h1>
-        
+
         <!-- Neue visuelle Einheit für die drei Elemente -->
-        <div style="background-color: #f8f9fa; border: 2px solid #7719AA; border-radius: 10px; padding: 25px; margin: 20px auto; max-width: 600px; box-shadow: 0 3px 10px rgba(119, 25, 170, 0.1);">
+        <div
+            style="background-color: #f8f9fa; border: 2px solid #7719AA; border-radius: 10px; padding: 25px; margin: 20px auto; max-width: 600px; box-shadow: 0 3px 10px rgba(119, 25, 170, 0.1);">
             <p style="margin-top: 0;">Click the button below to copy the template and paste it into OneNote.</p>
 
             <div class="d-flex flex-column align-items-center">
-                <button class="btn btn-secondary btn-lg" onclick="copyAllToClipboard(event)">Copy All Filtered LaTeX Packages to Clipboard</button>
+                <button class="btn btn-secondary btn-lg" onclick="copyAllToClipboard(event)">Copy All Filtered LaTeX
+                    Packages to Clipboard</button>
             </div>
 
-            <p style="margin-bottom: 0; margin-top: 20px; background-color: #F4F4F4; padding: 15px; border-left: 5px solid #7719AA; border-radius: 5px; font-size: 16px;">
-                💡 <strong>Quick Tip:</strong> For an easy start, click the <em>"Copy All Filtered LaTeX Packages to Clipboard"</em> button
-                above and paste the recommended LaTeX packages onto the first page of your OneNote notebook. These are best
+            <p
+                style="margin-bottom: 0; margin-top: 20px; background-color: #F4F4F4; padding: 15px; border-left: 5px solid #7719AA; border-radius: 5px; font-size: 16px;">
+                💡 <strong>Quick Tip:</strong> For an easy start, click the <em>"Copy All Filtered LaTeX Packages to
+                    Clipboard"</em> button
+                above and paste the recommended LaTeX packages onto the first page of your OneNote notebook. These are
+                best
                 practice settings to get you going quickly.
             </p>
         </div>
@@ -553,11 +581,10 @@
         <select id="filter-select" onchange="updateFilter()">
             <option value="all" selected>All</option>
             <option value="core-packages">Essential Packages</option>
+            <option value="recommended">Recommended</option>
             <option value="appearance">Appearance</option>
-            <option value="tables">Tables</option>
-            <option value="pdf">PDF-Integration</option>
-            <option value="bibliography">Bibliography</option>
-            <option value="four-five-level">paragraph and subparagraph</option>
+            <option value="four-five-level" title="Formatting rules for paragraph and subparagraph levels so they match the style of the higher-level headings.
+">Paragraph and Subparagraph Aligned with Parent Levels</option>
         </select>
 
         <label for="global-lang-select">Select language:</label>
